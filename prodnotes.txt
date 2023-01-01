@@ -1,3 +1,4 @@
 Switched to Next.JS to allow future development
 Switched to MongoDB away from Prisma and MySQL
 Using Auth0 for authentication to allow better options
+  - Modified Auth0 universal login pages (Screenshot this)
