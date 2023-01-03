@@ -1,0 +1,52 @@
+@import './variables';
+
+.loggedOut {
+  height: 100vh;
+  width: 100%;
+  background-color: $colPrimary;
+
+  @apply pt-32;
+
+  .divLogin {
+    @apply  my-auto mx-auto 
+            h-4/6 w-9/12
+            flex flex-col items-center justify-evenly;
+  }
+
+  .logo {
+    @apply aspect-square w-3/4;
+  }
+
+  .button {
+    background-color: $colTertiary;
+
+    @apply  w-64 h-20 my-5
+            border border-gray-300 rounded-full
+            flex flex-row justify-evenly items-center
+    ;
+
+    .btnText {
+      @apply block text-4xl font-bold;
+    }
+
+    .btnIcon {
+      @apply w-auto h-16;
+    }
+  }
+}
+
+.loading {
+  height: 100vh;
+  width: 100%;
+  background-color: $colPrimary;
+
+  @apply pt-32;
+
+  .logo {
+    @apply w-7/12 aspect-square mx-auto mb-10;
+  }
+
+  .spinner {
+    @apply mx-auto aspect-square w-1/5;
+  }
+}
