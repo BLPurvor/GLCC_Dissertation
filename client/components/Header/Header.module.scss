@@ -1,0 +1,36 @@
+@import "../../styles/variables";
+
+.container {
+  background-color: $colPrimary;
+  @apply  h-24 w-auto px-3
+          flex justify-between items-center
+  ;
+
+  .wrapBurger {
+    .iconBurger{
+      @apply  h-16 w-auto aspect-square
+              my-4
+              flex flex-col justify-evenly
+      ;
+
+      .iconB1, .iconB2, .iconB3 {
+        @apply  h-1 w-auto
+                m-1
+                bg-black
+                rounded-full
+        ;
+      }
+    }
+  }
+
+  .imgLogo{
+    @apply  h-16 w-auto
+    ;
+  }
+
+  .iconUser{
+    @apply  h-16 w-auto
+    ;
+  }
+}
+
