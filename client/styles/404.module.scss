@@ -1,0 +1,47 @@
+@import "./variables";
+
+.page {
+  height: 100vh;
+  width: 100%;
+  background-color: $colPrimary;
+}
+
+.container {
+  height:100vh;
+  @apply  flex flex-col
+
+  ;
+
+  .imgStumped {
+    @apply  h-72 w-auto aspect-square
+            mx-auto mt-0
+    ;
+  }
+
+  .txtBundle{
+    @apply  h-1/3
+            flex flex-col items-center
+            text-white
+    ;
+
+    .txtHeader{
+      @apply  text-5xl underline font-semibold
+              mb-9
+      ;
+    }
+
+    .txtBody {
+      @apply  text-center text-lg
+      ;
+    }
+  }
+
+    .btnReturn {
+      background-color: $colTertiary;
+      @apply  w-40 h-10
+              mx-auto mb-3
+              border rounded-full
+              text-black text-xl
+      ;
+    }
+  }
