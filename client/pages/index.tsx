@@ -1,35 +1,23 @@
+import { useUser } from "@auth0/nextjs-auth0/client";
+
 import Image from "next/image";
+import Link from "next/link";
+
 import loStyles from "../styles/Landing.module.scss";
 import liStyles from "../styles/Home.module.scss";
 
-import Header from "../components/Header";
-
 import imgLogo from "../assets/brand/logo.png";
 import imgLogin from "../assets/shared/login.svg";
-import imgLoading from "../assets/shared/loading.svg";
 
-import { useUser } from "@auth0/nextjs-auth0/client";
-import Link from "next/link";
-import Nav from "../components/Nav";
+import Header from "../components/Header";
+import Loading from "../components/Loading";
+import Layout from "../components/Layout";
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
 
   if (isLoading) {
-    return (
-      <div className={loStyles.loading}>
-        <Image
-          className={loStyles.logo}
-          src={imgLogo}
-          alt="Gregson Lane Cricket Club Logo"
-        />
-        <Image
-          className={loStyles.spinner}
-          src={imgLoading}
-          alt="Loading spinner"
-        />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error) {
@@ -39,9 +27,10 @@ export default function Home() {
   if (user) {
     return (
       <div className={liStyles.container}>
-        <Header />
-        <h1>Logged In</h1>
-        <Link href="api/auth/logout">Log out</Link>
+        <Layout>
+          <h1>Logged In</h1>
+          <Link href="api/auth/logout">Log out</Link>
+        </Layout>
       </div>
     );
   }

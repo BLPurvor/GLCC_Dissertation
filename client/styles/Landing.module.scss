@@ -35,18 +35,3 @@
   }
 }
 
-.loading {
-  height: 100vh;
-  width: 100%;
-  background-color: $colPrimary;
-
-  @apply pt-32;
-
-  .logo {
-    @apply w-7/12 aspect-square mx-auto mb-10;
-  }
-
-  .spinner {
-    @apply mx-auto aspect-square w-1/5;
-  }
-}
