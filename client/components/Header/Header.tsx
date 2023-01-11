@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import imgLogo from "../../assets/brand/logo.png";
+import Home from "../../assets/shared/home";
 import imgUser from "../../assets/shared/user.svg";
 import Nav from "../Nav";
 
@@ -10,10 +11,6 @@ import styles from "./Header.module.scss";
 
 export default function Header() {
   const [burgerStatus, setBurgerStatus] = useState(false);
-
-  useEffect(() => {
-    console.log(burgerStatus);
-  }, []);
 
   return (
     <div className={styles.container}>

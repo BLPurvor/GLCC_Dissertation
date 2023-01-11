@@ -16,9 +16,12 @@
       .iconB1, .iconB2, .iconB3 {
         @apply  h-1 w-auto
                 m-1
-                bg-black
                 rounded-full
+                bg-black
         ;
+        @media(prefers-color-scheme : light) {
+          background-color: $colTertiary;
+        }
       }
     }
   }
@@ -31,6 +34,9 @@
   .iconUser{
     @apply  h-16 w-auto
     ;
+    @media(prefers-color-scheme : light){
+      filter: invert(100%)
+    }
   }
 }
 
