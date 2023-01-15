@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String     @id @default(uuid()) @map("_id")
+  email          String     @unique
+  email_verified Boolean    @default(false)
+  firstname      String
+  lastname       String
+  username       String     @unique
+  password       String
+  created_at     DateTime
+  updated_at     DateTime
+  wallet         Wallet     @relation(fields: [wallet_id], references: [id])
+  wallet_id      String
+  entries        Entry[]
+  Gameweek       Gameweek[]
+}
+
+type Match {
+  match_id   String
+  home_score Int?
+  away_score Int?
+  result     String
+}
+
+model Gameweek {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  prize      Int
+  didPayout  Boolean @default(false)
+  author     User    @relation(fields: [authorName], references: [username])
+  authorName String
+  matches    Match[]
+  entries    Entry[]
+}
+
+model Entry {
+  id         String   @id @default(uuid()) @map("_id")
+  datetime   DateTime
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    String
+  won        Boolean  @default(false)
+  prediction Match[]
+  Gameweek   Gameweek @relation(fields: [gameweekId], references: [id])
+  gameweekId String   @db.ObjectId
+}
+
+type Tokens {
+  subs Int
+  teas Int
+}
+
+model Wallet {
+  id           String        @id @default(uuid()) @map("_id")
+  cashValue    Float
+  tokens       Tokens
+  transactions Transaction[]
+  User         User[]
+}
+
+model Transaction {
+  id       String   @id @default(uuid()) @map("_id")
+  amount   Float
+  datetime DateTime
+  Wallet   Wallet?  @relation(fields: [walletId], references: [id])
+  walletId String?
+}
