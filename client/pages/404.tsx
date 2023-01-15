@@ -3,8 +3,12 @@ import Image from "next/image";
 import styles from "../styles/404.module.scss";
 
 import imgStumped from "../assets/shared/stumped.svg"; //Needs updating
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 export default function Custom404() {
+  const { user, error, isLoading } = useUser();
+
   return (
     <div className={styles.page}>
       <div className={styles.container}>

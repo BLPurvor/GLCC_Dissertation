@@ -9,7 +9,6 @@ import liStyles from "../styles/Home.module.scss";
 import imgLogo from "../assets/brand/logo.png";
 import imgLogin from "../assets/shared/login.svg";
 
-import Header from "../components/Header";
 import Loading from "../components/Loading";
 import Layout from "../components/Layout";
 
@@ -28,8 +27,11 @@ export default function Home() {
     return (
       <div className={liStyles.container}>
         <Layout>
-          <h1>Logged In</h1>
-          <Link href="api/auth/logout">Log out</Link>
+          <>
+            <h1>Logged In</h1>
+            {JSON.stringify(user)}
+            <Link href="api/auth/logout">Log out</Link>
+          </>
         </Layout>
       </div>
     );
