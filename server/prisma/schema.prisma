@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -14,8 +14,8 @@ model User {
   id             String     @id @default(uuid()) @map("_id")
   email          String     @unique
   email_verified Boolean    @default(false)
-  firstname      String
-  lastname       String
+  firstname      String?
+  lastname       String?
   username       String     @unique
   password       String
   created_at     DateTime
@@ -26,20 +26,20 @@ model User {
   Gameweek       Gameweek[]
 }
 
-type Match {
-  match_id   String
-  home_score Int?
-  away_score Int?
-  result     String
-}
+// type Match {
+//   match_id   String
+//   home_score Int?
+//   away_score Int?
+//   result     String
+// }
 
 model Gameweek {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  id         String  @id @default(uuid()) @map("_id")
   prize      Int
   didPayout  Boolean @default(false)
   author     User    @relation(fields: [authorName], references: [username])
   authorName String
-  matches    Match[]
+  matches    String  @db.VarChar(255)
   entries    Entry[]
 }
 
@@ -49,20 +49,20 @@ model Entry {
   user       User     @relation(fields: [user_id], references: [id])
   user_id    String
   won        Boolean  @default(false)
-  prediction Match[]
+  prediction String   @db.VarChar(255)
   Gameweek   Gameweek @relation(fields: [gameweekId], references: [id])
-  gameweekId String   @db.ObjectId
+  gameweekId String
 }
 
-type Tokens {
-  subs Int
-  teas Int
-}
+// type Tokens {
+//   subs Int
+//   teas Int
+// }
 
 model Wallet {
   id           String        @id @default(uuid()) @map("_id")
   cashValue    Float
-  tokens       Tokens
+  tokens       String        @db.VarChar(255)
   transactions Transaction[]
   User         User[]
 }
@@ -71,6 +71,6 @@ model Transaction {
   id       String   @id @default(uuid()) @map("_id")
   amount   Float
   datetime DateTime
-  Wallet   Wallet?  @relation(fields: [walletId], references: [id])
-  walletId String?
+  Wallet   Wallet   @relation(fields: [walletId], references: [id])
+  walletId String
 }
