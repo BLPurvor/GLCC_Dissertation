@@ -22,7 +22,7 @@ export default function Nav({ active }: { active: boolean }) {
       <div className={styles.navSeparator}></div>
       <Link
         className={
-          router.pathname === "/games/*"
+          router.pathname.startsWith("/games")
             ? `${styles.navLink} ${styles.activeLink}`
             : `${styles.navLink}`
         }
@@ -34,7 +34,7 @@ export default function Nav({ active }: { active: boolean }) {
       <div className={styles.navSeparator} />
       <Link
         className={
-          router.pathname === "/about/*"
+          router.pathname.startsWith("/about")
             ? `${styles.navLink} ${styles.activeLink}`
             : `${styles.navLink}`
         }
@@ -46,7 +46,7 @@ export default function Nav({ active }: { active: boolean }) {
       <div className={styles.navSeparator} />
       <Link
         className={
-          router.pathname === "/contact-us/*"
+          router.pathname.startsWith("/contact-us")
             ? `${styles.navLink} ${styles.activeLink}`
             : `${styles.navLink}`
         }
