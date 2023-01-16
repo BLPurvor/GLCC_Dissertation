@@ -4,8 +4,8 @@
   background-color: $colPrimary;
   @apply  w-full h-24
           flex flex-row justify-between items-center
-          px-3
-          absolute bottom-0
+          px-3 mt-8
+          sticky bottom-0
   ;
 
   .iconHome{

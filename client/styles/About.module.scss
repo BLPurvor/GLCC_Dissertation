@@ -16,16 +16,23 @@
   }
 
   article {
-    @apply  mx-4
+    @apply  mx-4 mt-4
     ;
 
     h2 {
       @apply  text-center border-b
+              mb-2
       ;
     }
 
-    Image {
-
+    img {
+      @apply  border border-gray-400
+              ml-5
+              object-cover
+              w-1/2
+              float-right
+      ;
+      border-radius: 100%;
     }
 
     p {
