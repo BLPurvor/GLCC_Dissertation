@@ -29,7 +29,6 @@ export default function Home() {
         <Layout>
           <>
             <h1>Logged In</h1>
-            {JSON.stringify(user)}
             <Link href="api/auth/logout">Log out</Link>
           </>
         </Layout>
