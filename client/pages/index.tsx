@@ -11,6 +11,7 @@ import imgLogin from "../assets/shared/login.svg";
 
 import Loading from "../components/Loading";
 import Layout from "../components/Layout";
+import React from "react";
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
@@ -27,10 +28,10 @@ export default function Home() {
     return (
       <div className={liStyles.container}>
         <Layout>
-          <>
+          <React.Fragment>
             <h1>Logged In</h1>
             <Link href="api/auth/logout">Log out</Link>
-          </>
+          </React.Fragment>
         </Layout>
       </div>
     );

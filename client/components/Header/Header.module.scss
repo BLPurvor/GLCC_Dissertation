@@ -2,8 +2,9 @@
 
 .container {
   background-color: $colPrimary;
-  @apply  h-24 w-auto px-3
+  @apply  h-24 w-full px-3
           flex justify-between items-center
+          fixed top-0
   ;
 
   .wrapBurger {

@@ -1,5 +1,5 @@
 .container {
-  @apply  w-auto
+  @apply  w-auto py-24;
   ;
 
   .txtHeader {
@@ -16,7 +16,7 @@
   }
 
   article {
-    @apply  mx-4 mt-4
+    @apply  mx-4 my-4
     ;
 
     h2 {
