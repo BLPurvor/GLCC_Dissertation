@@ -25,9 +25,11 @@ export default function Home() {
   }
 
   if (user) {
+    const user_id = user.sub!.substring(6);
+
     return (
       <div className={liStyles.container}>
-        <Layout>
+        <Layout user_id={user_id}>
           <React.Fragment>
             <h1>Logged In</h1>
             <Link href="api/auth/logout">Log out</Link>

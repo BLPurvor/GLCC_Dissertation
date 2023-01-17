@@ -3,13 +3,16 @@ import Link from "next/link";
 import { useState } from "react";
 
 import imgLogo from "../../assets/brand/logo.png";
-import Home from "../../assets/shared/home";
 import imgUser from "../../assets/shared/user.svg";
 import Nav from "../Nav";
 
 import styles from "./Header.module.scss";
 
-export default function Header() {
+interface HeaderProps {
+  user_id: string;
+}
+
+export default function Header({ user_id }: HeaderProps) {
   const [burgerStatus, setBurgerStatus] = useState(false);
 
   return (
@@ -33,7 +36,7 @@ export default function Header() {
           alt="Gregson Lane CC Logo"
         />
       </Link>
-      <Link href="/account">
+      <Link href={`/account/${user_id}`}>
         <Image
           className={styles.iconUser}
           src={imgUser}
