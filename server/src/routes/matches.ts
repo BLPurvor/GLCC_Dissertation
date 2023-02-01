@@ -42,6 +42,8 @@ router.get(
     }
 
     if (isNaN(Date.parse(req.params.endDate))) {
+      // Similar to above, returns an error if endDate parameter cannot be parsed to a number
+
       return res.status(401).send("EREDNV");
     } else {
       // ISO8601 string contains date parameters in first 10 characters i.e. 2023-01-01
@@ -57,6 +59,7 @@ router.get(
     // Request from API server based on specific league information, cannot request multiple leagues through API.
     var fixturesByLeague = [];
     for (let i = 0; i < splitLeagues.length; i++) {
+      // Loop through given leagues and return as sections of an array for handling on front end.
       fixturesByLeague[i] = await getBetweenDates(splitLeagues[i], options);
     }
 
