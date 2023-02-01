@@ -1,4 +1,3 @@
-import { prisma } from "@prisma/client";
 import express, { Request, Response } from "express";
 import { getAllStd, getById, create } from "../controller/gameweek";
 const router = express.Router();
