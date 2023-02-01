@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import config from "./config";
 
 import { routeGameweek } from "./routes/gameweek";
+import { routeMatches } from "./routes/matches";
 
 import { prisma } from "./db";
 
@@ -16,6 +17,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/gameweek/", routeGameweek);
+app.use("/matches/", routeMatches);
 
 try {
   app.listen(PORT, () => {
