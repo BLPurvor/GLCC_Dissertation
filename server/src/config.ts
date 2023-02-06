@@ -1,21 +1,8 @@
-import dotenv from "dotenv";
+import { config as cfgenv } from "dotenv";
 
-dotenv.config();
-
-const NODE_ENV = process.env.NODE_ENV || "";
-const APP_PORT = process.env.APP_PORT || "";
-
-const DB_USER = process.env.DB_USER || "";
-const DB_PASS = process.env.DB_PASS || "";
-const DB_URL = `mongodb+srv://${DB_USER}:${DB_PASS}@glcc.czbq98e.mongodb.net/glcc?retryWrites=true&w=majority`;
-
-const config = {
-  mongo: {
-    url: DB_URL,
-  },
-  server: {
-    port: APP_PORT,
-  },
+var config = {
+  admin_db: process.env.ADMIN_DB_URL!,
+  std_db: process.env.STD_DB_URL!,
 };
 
 export default config;

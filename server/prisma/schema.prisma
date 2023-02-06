@@ -7,7 +7,13 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = env("ADMIN_DB_URL")
+}
+
+enum Role {
+  user
+  volunteer
+  admin
 }
 
 model User {
@@ -16,6 +22,7 @@ model User {
   email_verified Boolean    @default(false)
   firstname      String?
   lastname       String?
+  role           String     @default("user")
   username       String     @unique
   password       String
   created_at     DateTime
@@ -34,7 +41,7 @@ model User {
 // }
 
 model Gameweek {
-  id         String  @id @default(uuid()) @map("_id")
+  id         Int     @id @default(autoincrement()) @map("_id")
   prize      Int
   didPayout  Boolean @default(false)
   author     User    @relation(fields: [authorName], references: [username])
@@ -51,7 +58,7 @@ model Entry {
   won        Boolean  @default(false)
   prediction String   @db.VarChar(255)
   Gameweek   Gameweek @relation(fields: [gameweekId], references: [id])
-  gameweekId String
+  gameweekId Int
 }
 
 // type Tokens {
