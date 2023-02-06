@@ -10,11 +10,12 @@ export const getServerSideProps = withPageAuthRequired();
 
 export default function Coupon() {
   const { user, isLoading } = useUser();
-  const user_id: string = user!.sub!.substring(user!.sub!.indexOf("|") + 1);
 
   if (isLoading) {
     return <Loading />;
   }
+
+  const user_id: string = user!.sub!.substring(user!.sub!.indexOf("|") + 1);
 
   return (
     <Layout user_id={user_id}>
