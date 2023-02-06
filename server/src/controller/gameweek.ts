@@ -1,4 +1,5 @@
 import { prisma } from "../db";
+import { getFromList } from "./matches";
 
 type Gameweek = {
   id: number;
@@ -23,15 +24,16 @@ export const getAllStd = async (): Promise<Gameweek[]> => {
   return result;
 };
 
-export const getById = async (id: number): Promise<Gameweek | null> => {
+export const getById = async (id: number): Promise<Gameweek | string> => {
   // Fetch gameweek by given id number
-  const result = await prisma.gameweek.findFirst({
+  const dbResult = await prisma.gameweek.findFirst({
     where: {
       id: id,
     },
   });
 
-  return result;
+  if (dbResult === null) return "EFIDNR";
+  return dbResult;
 };
 
 export const create = async (
