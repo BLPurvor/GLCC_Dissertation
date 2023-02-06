@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getBetweenDates } from "../controller/matches";
+import { getBetweenDates, getFromList } from "../controller/matches";
 const router = express.Router();
 
 router.get(
@@ -66,5 +66,26 @@ router.get(
     return res.send(fixturesByLeague);
   }
 );
+
+router.get("/list/:idList", async (req: Request, res: Response) => {
+  const param: string = req.params.idList;
+  // Only parameter to parse in this instance, structuring of request will take place on the client side and in tandem with the Gameweek controller.
+
+  // Check if parameter is defined.
+  if (param === "" || param === null) {
+    return res.status(401).send("EFFBLI");
+  }
+
+  // Check contents of string parameter.
+  let paramArray: Array<string> = param.split("-");
+  // Split string into array for value checking
+
+  const isNumber = (currentValue: string) => !isNaN(parseInt(currentValue));
+  if (!paramArray.every(isNumber)) return res.status(401).send("EFIDNN");
+  // If every item in array doesn't pass given test in isNumber(), then return error to client, do not continue to process request.
+
+  let result = await getFromList(param);
+  return res.send(result);
+});
 
 export { router as routeMatches };
