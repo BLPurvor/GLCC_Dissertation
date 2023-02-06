@@ -1,0 +1,41 @@
+.container {
+  @apply  w-auto py-24
+          z-0
+          ;
+
+  .txtHeader {
+    @apply  my-4 pt-4
+            text-center
+            font-semibold text-3xl
+            underline
+    ;
+  }
+
+  .gamesHousing {
+    @apply  w-4/5 mx-auto py-6
+            grid grid-cols-2 gap-8
+    ;
+
+    .gameButton {
+      @apply  w-full aspect-square mx-auto
+              relative -z-10
+              rounded-2xl
+              bg-green-900
+              text-white
+              bg-cover
+              text-2xl
+              font-bold
+      ;
+    }
+    .btnOdd span{
+      @apply text-left absolute top-3 left-3;
+    }
+    .btnEven span{
+      @apply text-right absolute bottom-3 right-3;
+    }
+
+    #coupon {
+      background-image: url("../../assets/shared/coupon.png");
+    }
+  }
+}
