@@ -10,9 +10,10 @@ import styles from "./Header.module.scss";
 
 interface HeaderProps {
   user_id: string;
+  role: string;
 }
 
-export default function Header({ user_id }: HeaderProps) {
+export default function Header({ user_id, role }: HeaderProps) {
   const [burgerStatus, setBurgerStatus] = useState(false);
 
   return (
@@ -27,7 +28,7 @@ export default function Header({ user_id }: HeaderProps) {
           <div className={styles.iconB2}></div>
           <div className={styles.iconB3}></div>
         </button>
-        <Nav active={burgerStatus} />
+        <Nav active={burgerStatus} role={role} />
       </div>
       <Link href="/">
         <Image

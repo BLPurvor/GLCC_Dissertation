@@ -25,7 +25,7 @@ export default function Home() {
   }
 
   if (user) {
-    const user_id = user.sub!.substring(6);
+    const user_id: string = user!.sub!.substring(user!.sub!.indexOf("|") + 1);
 
     return (
       <div className={liStyles.container}>
