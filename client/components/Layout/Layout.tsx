@@ -1,6 +1,9 @@
 import Header from "../Header";
 import Footer from "../Footer";
 
+import useSWR from "swr";
+import { userInfoFetch } from "../../scripts/userInfo";
+
 import styles from "./layout.module.scss";
 import React, { ReactNode } from "react";
 
@@ -10,8 +13,6 @@ interface LayoutProps {
 }
 
 export default function Layout({ children, user_id }: LayoutProps) {
-  // const { data , error } = useSWR =>>> Recommended by Vercel (designed by same team).
-
   return (
     <div className={styles.container}>
       <Header user_id={user_id} />

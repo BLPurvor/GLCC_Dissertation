@@ -1,0 +1,12 @@
+.container {
+  @apply  w-auto py-24
+          ;
+
+  .txtHeader {
+    @apply  my-4
+            text-center
+            font-semibold text-3xl
+            underline
+    ;
+  }
+}
