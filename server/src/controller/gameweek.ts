@@ -1,5 +1,4 @@
 import { prisma } from "../db";
-import { getFromList } from "./matches";
 
 type Gameweek = {
   id: number;

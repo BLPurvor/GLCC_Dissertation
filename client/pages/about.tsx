@@ -12,13 +12,14 @@ export const getServerSideProps = withPageAuthRequired();
 
 export default function About() {
   const { user, error, isLoading } = useUser();
+  const user_id: string = user!.sub!.substring(user!.sub!.indexOf("|") + 1);
 
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <Layout>
+    <Layout user_id={user_id}>
       <div className={styles.container}>
         <h1 className={styles.txtHeader}>About Us</h1>
         <p className={styles.txtMainDesc}>
@@ -31,9 +32,7 @@ export default function About() {
           experience and ability.
         </p>
         <article id="FirstTeam">
-          <h2>
-            The 1<sup>st</sup> XI
-          </h2>
+          <h2>The 1st XI</h2>
           {/* <Image */}
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
@@ -47,9 +46,7 @@ export default function About() {
           </p>
         </article>
         <article id="SecondTeam">
-          <h2 className={styles.artHeader}>
-            The 2<sup>nd</sup> XI
-          </h2>
+          <h2 className={styles.artHeader}>The 2nd XI</h2>
           <Image
             src={twos_2022}
             alt="Gregson Lane Second Team 2021/22 Season"

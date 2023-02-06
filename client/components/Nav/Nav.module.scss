@@ -17,7 +17,7 @@ $transitionSpeed: 0.5s;
   background: rgba($colPrimary, 0.64);
   backdrop-filter: blur(4px);
   margin-left: -0.75rem;
-  @apply  z-10 absolute
+  @apply  z-50 absolute
           w-full 
           flex flex-col items-center
           pt-6
