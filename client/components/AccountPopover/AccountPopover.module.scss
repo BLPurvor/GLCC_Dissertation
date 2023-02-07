@@ -1,0 +1,19 @@
+@import '../../styles/_variables.scss';
+
+.container[data-status=true]{@apply flex;}
+.container[data-status=false]{@apply hidden;}
+
+.container{
+  background-color: $colPrimary;
+  @apply  z-10 flex-col
+          py-6 px-4
+          absolute top-28 right-4
+          text-right text-white
+          border-2 border-gray-400
+          rounded-lg
+          
+  ;
+  a:nth-child(odd){
+    @apply  bg-black;
+  }
+}
