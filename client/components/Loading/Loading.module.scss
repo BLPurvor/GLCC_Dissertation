@@ -5,7 +5,9 @@
   width: 100%;
   background-color: $colPrimary;
 
-  @apply pt-32;
+  @apply  pt-32 w-full
+          absolute top-0
+  ;
 
   .logo {
     @apply w-7/12 aspect-square mx-auto mb-10;

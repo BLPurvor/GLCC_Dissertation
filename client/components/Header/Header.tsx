@@ -5,6 +5,7 @@ import { useState } from "react";
 import imgLogo from "../../assets/brand/logo.png";
 import imgUser from "../../assets/shared/user.svg";
 import Nav from "../Nav";
+import AccountPopover from "../AccountPopover";
 
 import styles from "./Header.module.scss";
 
@@ -15,6 +16,7 @@ interface HeaderProps {
 
 export default function Header({ user_id, role }: HeaderProps) {
   const [burgerStatus, setBurgerStatus] = useState(false);
+  const [accountStatus, setAccountStatus] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -37,13 +39,23 @@ export default function Header({ user_id, role }: HeaderProps) {
           alt="Gregson Lane CC Logo"
         />
       </Link>
-      <Link href={`/account/${user_id}`}>
+      {/* <Link href={`/account/${user_id}`}> */}
+      <button
+        id="dropdownToggle"
+        onClick={() => setAccountStatus(!accountStatus)}
+      >
         <Image
           className={styles.iconUser}
           src={imgUser}
           alt="Account Options Icon"
         />
-      </Link>
+      </button>
+      <AccountPopover
+        user_id={user_id}
+        status={accountStatus}
+        statusChange={(value: boolean) => setAccountStatus(value)}
+      />
+      {/* </Link> */}
     </div>
   );
 }

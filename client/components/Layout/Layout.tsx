@@ -28,6 +28,8 @@ export default function Layout({ children, user_id }: LayoutProps) {
   } = useSWR(`http://localhost:3001/user/${user_id}`, userInfoFetch);
 
   if (wallet_loading || user_loading) return <Loading />;
+  if (wallet_error || user_error) {
+  }
 
   return (
     <div className={styles.container}>
