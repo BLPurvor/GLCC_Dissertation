@@ -50,7 +50,11 @@ export default function Header({ user_id, role }: HeaderProps) {
           alt="Account Options Icon"
         />
       </button>
-      <AccountPopover state={accountStatus} />
+      <AccountPopover
+        user_id={user_id}
+        status={accountStatus}
+        statusChange={(value: boolean) => setAccountStatus(value)}
+      />
       {/* </Link> */}
     </div>
   );
