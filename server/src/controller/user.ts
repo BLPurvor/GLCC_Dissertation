@@ -1,4 +1,3 @@
-import { transformDocument } from "@prisma/client/runtime";
 import { prisma } from "../db";
 
 type User = {
@@ -8,8 +7,8 @@ type User = {
   email_verified?: boolean;
   role?: string;
   wallet_id?: string;
-  firstname?: string;
-  lastname?: string;
+  first_name?: string;
+  last_name?: string;
 };
 
 export const getRoleById = async (user_id: string): Promise<User | string> => {
@@ -38,8 +37,8 @@ export const getSafeInfo = async (user_id: string): Promise<any> => {
     },
     select: {
       username: true,
-      firstname: true,
-      lastname: true,
+      first_name: true,
+      last_name: true,
       email: true,
       email_verified: true,
       role: true,

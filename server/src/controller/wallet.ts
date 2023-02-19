@@ -2,7 +2,7 @@ import { prisma } from "../db";
 
 type Wallet = {
   wallet_id: string;
-  cashValue: number;
+  cash_value: number;
   tokens?: string;
 };
 
@@ -25,7 +25,7 @@ export const getWalletByUser = async (user_id: string) => {
     },
     select: {
       id: true,
-      cashValue: true,
+      cash_value: true,
     },
   });
 

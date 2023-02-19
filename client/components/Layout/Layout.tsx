@@ -28,14 +28,12 @@ export default function Layout({ children, user_id }: LayoutProps) {
   } = useSWR(`http://localhost:3001/user/${user_id}`, userInfoFetch);
 
   if (wallet_loading || user_loading) return <Loading />;
-  if (wallet_error || user_error) {
-  }
 
   return (
     <div className={styles.container}>
       <Header user_id={user_id} role={user_data.role} />
       <main>{children}</main>
-      <Footer accountValue={wallet_data.cashValue + 3} />
+      <Footer accountValue={wallet_data.cash_value} />
     </div>
   );
 }

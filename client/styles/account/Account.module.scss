@@ -1,4 +1,77 @@
+@import "../_variables";
+
 .container {
   @apply  w-auto py-24
   ;
+
+  .header {
+    @apply  my-3
+            text-center text-2xl
+            underline
+    ;
+  }
+
+  form {
+    @apply  w-4/5 h-auto
+            mx-auto
+            border rounded-md
+    ;
+
+    label {
+      @apply  underline
+      ;
+    }
+
+    .inputGroup {
+      @apply m-3
+    }
+
+    input {
+      font-family: 'Courier New', Courier, monospace;
+      @apply  mx-auto my-1
+              w-full
+              text-center font-medium
+              border-2 border-gray-500
+      ;
+    }
+
+    input:is([disabled]){
+      @apply  text-gray-400
+      ;
+    }
+
+    input:not([disabled]){
+      // @apply  border-2 border-gray-500 
+      // ;
+    }
+
+    .btnGroup {
+      @apply  mx-2 my-3
+              flex flex-row
+              justify-evenly
+      ;
+      .btn {
+        background-color: $colPrimary;
+        @apply  py-1 px-2
+                rounded-full
+                text-white
+                font-semibold
+        ;
+      }
+
+      .btnMake {
+        @apply  bg-blue-600
+        ;
+      }
+
+      .btnCancel {
+        @apply  bg-red-600
+        ;
+      }
+
+      .btnSave {
+
+      }
+    }
+  }
 }
