@@ -77,6 +77,8 @@ export const updateById = async (updateData: updateData) => {
 
   let passwordMatch = await bcrypt.compare(password, userPass.password);
 
+  if (!passwordMatch) return "EUUPAS";
+
   const updateResult = await prisma.user.update({
     where: { id: user_id },
     data: {
@@ -86,4 +88,8 @@ export const updateById = async (updateData: updateData) => {
       email: email,
     },
   });
+
+  if (!updateResult) return "EUDIPS";
+
+  return "E00000";
 };
