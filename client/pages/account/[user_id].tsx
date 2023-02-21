@@ -10,12 +10,26 @@ import Custom404 from "../404";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useState } from "react";
-import Error from "next/error";
+import axios from "axios";
 
-// export const getServerSideProps = withPageAuthRequired();
+export const getServerSideProps = withPageAuthRequired();
+
+const handleUpdateDetails = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  await axios
+    .post(
+      "http://localhost:3001/user/update",
+      document.querySelector("#updateForm"),
+      { headers: { "Content-Type": "application/json" } }
+    )
+    .then((response) => console.log(response))
+    .catch((error) => console.log(error));
+};
 
 export default function Account() {
   const [isDisabled, setIsDisabled] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const { user, isLoading } = useUser();
 
@@ -42,7 +56,14 @@ export default function Account() {
     <Layout user_id={user_id?.toString()!}>
       <div className={styles.container}>
         <h1 className={styles.header}>Account Details</h1>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={(e) => handleUpdateDetails(e)} id="updateForm">
+          <input
+            type="hidden"
+            id="user_id"
+            name="user_id"
+            value={user_id}
+            readOnly
+          />
           {Object.keys(user_data).map((key) => {
             let words = key.split("_");
             for (let i = 0; i < words.length; i++) {
@@ -58,7 +79,7 @@ export default function Account() {
                 <label htmlFor={key}>{`${label}`}</label>
                 <br />
                 <input
-                  disabled={isDisabled}
+                  readOnly={isDisabled}
                   type="text"
                   name={key}
                   id={key}
@@ -86,8 +107,9 @@ export default function Account() {
             <button
               hidden={isDisabled}
               type="submit"
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
+                setIsDisabled(!isDisabled);
+                setUpdateLoading(!isLoading);
               }}
               className={`${styles.btn} ${styles.btnSave}`}
             >
