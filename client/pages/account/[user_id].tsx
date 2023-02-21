@@ -9,34 +9,46 @@ import styles from "../../styles/account/Account.module.scss";
 import Custom404 from "../404";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import axios from "axios";
 
 export const getServerSideProps = withPageAuthRequired();
 
-const handleUpdateDetails = async (e: FormEvent<HTMLFormElement>) => {
+const handleUpdateDetails = async (
+  e: FormEvent<HTMLFormElement>,
+  stateUpdate: Function,
+  state: string
+) => {
   e.preventDefault();
 
-  await axios
+  return await axios
     .post(
       "http://localhost:3001/user/update",
       document.querySelector("#updateForm"),
       { headers: { "Content-Type": "application/json" } }
     )
-    .then((response) => console.log(response))
-    .catch((error) => console.log(error));
+    .then((response) => {
+      let field = document.getElementById("password") as HTMLInputElement;
+      field.value = "";
+      return stateUpdate(response.data);
+    })
+    .catch((error) => {
+      let field = document.getElementById("password") as HTMLInputElement;
+      field.value = "";
+      return stateUpdate(error.data);
+    });
 };
 
 export default function Account() {
   const [isDisabled, setIsDisabled] = useState(true);
-  const [updateLoading, setUpdateLoading] = useState(false);
+  const [resultState, setResultState] = useState("");
 
   const { user, isLoading } = useUser();
 
   if (isLoading) return <Loading />;
   if (user === undefined) return <Custom404 />;
 
-  const user_id: string = user!.sub!.substring(user!.sub!.indexOf("|") + 1);
+  const user_id: string = user.sub!.substring(user.sub!.indexOf("|") + 1);
 
   if (isDisabled) {
     var changes = "Make Changes";
@@ -56,7 +68,10 @@ export default function Account() {
     <Layout user_id={user_id?.toString()!}>
       <div className={styles.container}>
         <h1 className={styles.header}>Account Details</h1>
-        <form onSubmit={(e) => handleUpdateDetails(e)} id="updateForm">
+        <form
+          onSubmit={(e) => handleUpdateDetails(e, setResultState, resultState)}
+          id="updateForm"
+        >
           <input
             type="hidden"
             id="user_id"
@@ -103,13 +118,15 @@ export default function Account() {
               placeholder="Confirm Password"
             />
           </div>
+          <div className={styles.ctnResult} data-status={resultState}>
+            <h1>{resultState}</h1>
+          </div>
           <div className={styles.btnGroup}>
             <button
               hidden={isDisabled}
               type="submit"
               onClick={() => {
                 setIsDisabled(!isDisabled);
-                setUpdateLoading(!isLoading);
               }}
               className={`${styles.btn} ${styles.btnSave}`}
             >
