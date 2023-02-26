@@ -5,8 +5,6 @@ import styles from "../../styles/games/index.module.scss";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { userInfoFetch, walletInfoFetch } from "../../scripts/userInfo";
-import useSWR from "swr";
 import Link from "next/link";
 
 export const getServerSideProps = withPageAuthRequired();
