@@ -1,7 +1,7 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 import useSWR from "swr";
-import { userInfoFetch } from "../../scripts/userInfo";
+import { userInfoFetch, updateInfo } from "../../scripts/userInfo";
 
 import Layout from "../../components/Layout";
 import Loading from "../../components/Loading";
@@ -16,32 +16,37 @@ export const getServerSideProps = withPageAuthRequired();
 
 const handleUpdateDetails = async (
   e: FormEvent<HTMLFormElement>,
-  stateUpdate: Function,
-  state: string
+  setMessage: Function,
+  setStatus: Function
 ) => {
   e.preventDefault();
 
-  return await axios
-    .post(
-      "http://localhost:3001/user/update",
-      document.querySelector("#updateForm"),
-      { headers: { "Content-Type": "application/json" } }
-    )
+  let url = "http://localhost:3001/user/update";
+  let form = document.querySelector("#updateForm");
+
+  const updateResult = await axios
+    .post(url, form, { headers: { "Content-Type": "application/json" } })
     .then((response) => {
       let field = document.getElementById("password") as HTMLInputElement;
       field.value = "";
-      return stateUpdate(response.data);
+      return response;
     })
     .catch((error) => {
       let field = document.getElementById("password") as HTMLInputElement;
       field.value = "";
-      return stateUpdate(error.data);
+      return error.response;
     });
+
+  setStatus(updateResult.status);
+  setMessage(updateResult.data);
+
+  return updateResult;
 };
 
 export default function Account() {
   const [isDisabled, setIsDisabled] = useState(true);
-  const [resultState, setResultState] = useState("");
+  const [returnMsg, setReturnMsg] = useState("");
+  const [returnStatus, setReturnStatus] = useState(undefined);
 
   const { user, isLoading } = useUser();
 
@@ -65,11 +70,13 @@ export default function Account() {
   if (user_loading) return <Loading />;
 
   return (
-    <Layout user_id={user_id?.toString()!}>
+    <Layout user_id={user_id.toString()!}>
       <div className={styles.container}>
         <h1 className={styles.header}>Account Details</h1>
         <form
-          onSubmit={(e) => handleUpdateDetails(e, setResultState, resultState)}
+          onSubmit={(e) =>
+            handleUpdateDetails(e, setReturnMsg, setReturnStatus)
+          }
           id="updateForm"
         >
           <input
@@ -118,8 +125,12 @@ export default function Account() {
               placeholder="Confirm Password"
             />
           </div>
-          <div className={styles.ctnResult} data-status={resultState}>
-            <h1>{resultState}</h1>
+          <div
+            className={styles.ctnResult}
+            data-status={returnStatus ? returnStatus : 0}
+          >
+            <h1>Status Code: {returnStatus}</h1>
+            <p>{returnMsg}</p>
           </div>
           <div className={styles.btnGroup}>
             <button
