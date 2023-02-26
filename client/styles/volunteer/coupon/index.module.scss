@@ -1,0 +1,32 @@
+@import '../../variables';
+
+.container {
+  @apply  w-auto py-24
+          z-0
+          ;
+
+  h1 {
+    @apply  py-4
+            text-center text-2xl
+            font-bold
+            underline
+    ;
+  }
+
+  .options {
+    @apply  w-4/5 h-auto
+            mx-auto
+            list-none
+            flex flex-row flex-wrap
+            justify-evenly
+    ;
+
+    button {
+      background-color: $colPrimary;
+      @apply  mx-3 my-1 px-5 py-1
+              rounded-md
+              text-white text-sm
+      ;
+    }
+  }
+}
