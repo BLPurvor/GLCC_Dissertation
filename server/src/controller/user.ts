@@ -1,5 +1,5 @@
-import { transformDocument } from "@prisma/client/runtime";
 import { prisma } from "../db";
+import bcrypt from "bcrypt";
 
 type User = {
   id?: string;
@@ -8,8 +8,8 @@ type User = {
   email_verified?: boolean;
   role?: string;
   wallet_id?: string;
-  firstname?: string;
-  lastname?: string;
+  first_name?: string;
+  last_name?: string;
 };
 
 export const getRoleById = async (user_id: string): Promise<User | string> => {
@@ -38,8 +38,8 @@ export const getSafeInfo = async (user_id: string): Promise<any> => {
     },
     select: {
       username: true,
-      firstname: true,
-      lastname: true,
+      first_name: true,
+      last_name: true,
       email: true,
       email_verified: true,
       role: true,
@@ -51,4 +51,45 @@ export const getSafeInfo = async (user_id: string): Promise<any> => {
   }
 
   return result;
+};
+
+type updateData = {
+  user_id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+};
+
+export const updateById = async (updateData: updateData) => {
+  const { user_id, username, first_name, last_name, email, password } =
+    updateData;
+
+  const userPass = await prisma.user.findFirst({
+    where: { id: user_id },
+    select: { password: true },
+  });
+
+  if (userPass === null || userPass.password === undefined) {
+    return "EGUIPF";
+  }
+
+  let passwordMatch = await bcrypt.compare(password, userPass.password);
+
+  if (!passwordMatch) return "EUUPAS";
+
+  const updateResult = await prisma.user.update({
+    where: { id: user_id },
+    data: {
+      username: username,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+    },
+  });
+
+  if (!updateResult) return "EUDIPS";
+
+  return "E00000";
 };

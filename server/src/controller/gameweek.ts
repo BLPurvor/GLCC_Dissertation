@@ -2,9 +2,9 @@ import { prisma } from "../db";
 
 type Gameweek = {
   id: number;
-  prize: Number;
-  didPayout?: boolean;
-  authorName?: String;
+  prize: number;
+  did_payout?: boolean;
+  author_name?: String;
   matches: string;
   entries?: String[];
 };
@@ -14,7 +14,22 @@ export const getAllStd = async (): Promise<Gameweek[]> => {
   const result = prisma.gameweek.findMany({
     select: {
       id: true,
-      didPayout: true,
+      did_payout: true,
+      matches: true,
+      prize: true,
+    },
+  });
+
+  return result;
+};
+
+export const getPayout = async (): Promise<Gameweek[]> => {
+  const result = prisma.gameweek.findMany({
+    where: {
+      did_payout: true,
+    },
+    select: {
+      id: true,
       matches: true,
       prize: true,
     },
@@ -52,13 +67,13 @@ export const create = async (
 
   // Get information on last monetary prize value for autoincrementation.
   const lastPrize = await prisma.gameweek.findFirst({
-    select: { didPayout: true, prize: true },
+    select: { did_payout: true, prize: true },
     take: -1,
   });
 
   if (!lastPrize) return "EFGWLP"; // If query fails throw error.
 
-  if (lastPrize.didPayout) newPrize = 250;
+  if (lastPrize.did_payout) newPrize = 250;
   // If last gameweek paid out to an entrant, then set new prize to £250.
   else newPrize = lastPrize.prize + 25;
   // Else, increment by £25.
@@ -66,7 +81,7 @@ export const create = async (
   // Attempt to create the gameweek through DB.
   const query = await prisma.gameweek.create({
     data: {
-      authorName: user.username,
+      author_name: user.username,
       prize: newPrize,
       matches: matches,
     },

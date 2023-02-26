@@ -1,4 +1,122 @@
+@import "../_variables";
+
 .container {
   @apply  w-auto py-24
   ;
+
+  .header {
+    @apply  my-3
+            text-center text-2xl
+            underline
+    ;
+  }
+
+  form {
+    @apply  w-4/5 h-auto
+            mx-auto
+            border rounded-md
+    ;
+
+    .ctnResult{
+      @apply  w-11/12 h-auto
+              mx-auto p-3
+              border-2 rounded-md
+      ;
+
+      h1 {
+        @apply  text-center
+                font-semibold
+                underline underline-offset-1
+        ;
+      }
+
+      p {
+        @apply  text-center text-sm
+        ;
+      }
+
+      &[data-status="0"]{
+        @apply  hidden
+        ;
+      }
+
+      &[data-status="200"]{
+        @apply  bg-green-400
+        ;
+      }
+      &[data-status="400"]{
+        @apply bg-red-400
+        ;
+      }
+      &[data-status="401"]{
+        @apply  bg-red-400
+        ;
+      }
+      &[data-status="500"]{
+        @apply bg-orange-400
+        ;
+      }
+      &[data-status="501"]{
+        @apply bg-orange-400
+        ;
+      }
+    }
+
+    label {
+      @apply  underline
+      ;
+    }
+
+    .inputGroup {
+      @apply m-3
+    }
+
+    input {
+      font-family: 'Courier New', Courier, monospace;
+      @apply  mx-auto my-1
+              w-full
+              text-center font-medium
+              border-2 border-gray-500
+      ;
+    }
+
+    input:is([readOnly]){
+      @apply  text-gray-400
+      ;
+    }
+
+    input:not([readOnly]){
+      // @apply  border-2 border-gray-500 
+      // ;
+    }
+
+    .btnGroup {
+      @apply  mx-2 my-3
+              flex flex-row
+              justify-evenly
+      ;
+      .btn {
+        background-color: $colPrimary;
+        @apply  py-1 px-2
+                rounded-full
+                text-white
+                font-semibold
+        ;
+      }
+
+      .btnMake {
+        @apply  bg-blue-600
+        ;
+      }
+
+      .btnCancel {
+        @apply  bg-red-600
+        ;
+      }
+
+      .btnSave {
+
+      }
+    }
+  }
 }

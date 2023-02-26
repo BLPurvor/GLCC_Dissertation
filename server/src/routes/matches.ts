@@ -24,7 +24,7 @@ router.get(
 
     // If Season parameter is not a number, return an error to client.
     if (isNaN(parseInt(req.params.season))) {
-      return res.status(401).send("ERPSNN");
+      return res.status(500).send("EFSNAN");
     } else {
       var season = parseInt(req.params.season);
     }
@@ -33,7 +33,7 @@ router.get(
     if (isNaN(Date.parse(req.params.startDate))) {
       // Return an error to client if date cannot be parsed to a number.
       // If this check fails, the API will also return an error stating that inputs must match their given requirements which will be returned to the user
-      return res.status(401).send("ERSDNV");
+      return res.status(500).send("EFSDNN");
     } else {
       // ISO8601 string contains date parameters in first 10 characters i.e. 2023-01-01
       var startDate = new Date(req.params.startDate)
@@ -44,7 +44,7 @@ router.get(
     if (isNaN(Date.parse(req.params.endDate))) {
       // Similar to above, returns an error if endDate parameter cannot be parsed to a number
 
-      return res.status(401).send("EREDNV");
+      return res.status(401).send("EFEDNN");
     } else {
       // ISO8601 string contains date parameters in first 10 characters i.e. 2023-01-01
       var endDate = new Date(req.params.endDate).toISOString().substring(0, 10);

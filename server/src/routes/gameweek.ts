@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getAllStd, getById, create } from "../controller/gameweek";
+import { getAllStd, getById, create, getPayout } from "../controller/gameweek";
 const router = express.Router();
 
 router.get("/all", async (req: Request, res: Response) => {
@@ -7,10 +7,19 @@ router.get("/all", async (req: Request, res: Response) => {
   const result = await getAllStd();
 
   if (result.length === 0) {
-    // If the server returns an empty array, throw an error.
-    return res.status(500).send("EFGWALL");
+    // If the server returns an empty array, throw a no content header.
+    return res.status(204).send("No Content");
   }
   // Else return all gameweek information (Or error thrown by controller)
+  return res.status(200).send(result);
+});
+
+router.get("/payout", async (req: Request, res: Response) => {
+  // Await response from server controller for gameweeks with a did_payout of true.
+  const result = await getPayout();
+
+  if (result.length === 0) return res.status(204).send("No Content");
+
   return res.status(200).send(result);
 });
 
