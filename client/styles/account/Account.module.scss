@@ -17,6 +17,51 @@
             border rounded-md
     ;
 
+    .ctnResult{
+      @apply  w-11/12 h-auto
+              mx-auto p-3
+              border-2 rounded-md
+      ;
+
+      h1 {
+        @apply  text-center
+                font-semibold
+                underline underline-offset-1
+        ;
+      }
+
+      p {
+        @apply  text-center text-sm
+        ;
+      }
+
+      &[data-status="0"]{
+        @apply  hidden
+        ;
+      }
+
+      &[data-status="200"]{
+        @apply  bg-green-400
+        ;
+      }
+      &[data-status="400"]{
+        @apply bg-red-400
+        ;
+      }
+      &[data-status="401"]{
+        @apply  bg-red-400
+        ;
+      }
+      &[data-status="500"]{
+        @apply bg-orange-400
+        ;
+      }
+      &[data-status="501"]{
+        @apply bg-orange-400
+        ;
+      }
+    }
+
     label {
       @apply  underline
       ;
