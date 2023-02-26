@@ -2,7 +2,7 @@ import { prisma } from "../db";
 
 type Gameweek = {
   id: number;
-  prize: Number;
+  prize: number;
   did_payout?: boolean;
   author_name?: String;
   matches: string;
@@ -15,6 +15,21 @@ export const getAllStd = async (): Promise<Gameweek[]> => {
     select: {
       id: true,
       did_payout: true,
+      matches: true,
+      prize: true,
+    },
+  });
+
+  return result;
+};
+
+export const getPayout = async (): Promise<Gameweek[]> => {
+  const result = prisma.gameweek.findMany({
+    where: {
+      did_payout: true,
+    },
+    select: {
+      id: true,
       matches: true,
       prize: true,
     },
