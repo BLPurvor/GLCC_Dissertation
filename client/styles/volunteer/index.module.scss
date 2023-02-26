@@ -1,0 +1,29 @@
+@import "../variables";
+
+.container {
+  @apply  w-auto py-24
+          z-0
+  ;
+
+  h1 {
+    @apply  my-4
+            text-2xl text-center font-bold
+            underline
+    ;
+  }
+
+  .cntButtons{
+    @apply  w-4/5 py-4
+            mx-auto
+            grid grid-cols-2 gap-8
+
+    ;
+
+    button {
+      background-color: $colPrimary;
+      @apply  w-full h-auto aspect-square
+              text-white
+      ;
+    }
+  }
+}
