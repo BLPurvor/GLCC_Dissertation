@@ -42,7 +42,7 @@ export default function Layout({ children, user_id }: LayoutProps) {
     <div className={styles.container}>
       <Header user_id={user_id} role={user_data.role} />
       <main>{children}</main>
-      <Footer accountValue={wallet_data.cashValue} />
+      <Footer accountValue={wallet_data.cash_value} />
     </div>
   );
 }
