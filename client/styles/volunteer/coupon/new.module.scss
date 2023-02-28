@@ -15,7 +15,7 @@
   .dateSelect {
     @apply  w-11/12 h-auto
             mx-auto my-1
-            
+            text-center
     ;
 
     .dateInputGroupGroup {
@@ -39,6 +39,14 @@
           ;
         }
       }
+    }
+     
+    .dateSubmit {
+      background-color: $colPrimary;
+      @apply  mx-auto p-2
+              border-2 border-gray-400 rounded-lg
+              text-white
+      ;
     }
 
     .leagueHousing {
@@ -70,6 +78,44 @@
     }
   }
 
+  .counter {
+    background-color: $colPrimary;
+    @apply  w-16 aspect-square
+            fixed right-1.5
+            z-20
+            flex items-center
+            rounded-2xl
+            text-white text-center
+    ;
+  }
+
+  .invisible {
+    @apply  hidden
+    ;
+  }
+  .invalidMatches {
+    background-color: $colAccent;
+  }
+
+  .fixtureHousing {
+    @apply  text-center
+    ;
+  }
+
+  .matchweekSubmit {
+    background-color: $colPrimary;
+    @apply  text-white
+              border-2 border-gray-400 rounded-lg
+              p-2
+    ;
+
+    &:disabled {
+      background-color: $colAccent;
+      @apply  text-gray-400
+      ;
+    }
+  }
+
   .fixture {
     @apply  flex flex-col
             w-10/12 mx-auto my-4
@@ -91,37 +137,30 @@
     }
 
     div {
-
       .fixtureInfo {
         @apply  text-center
         ;
-
         .date {
           @apply text-sm
           ;
         }
-
         .venue {
           @apply  text-xs
           ;
         }
       }
-
       .mainContainer {
         @apply  flex flex-row justify-between
         ;
-
         .team {
           @apply  text-center
           ;
-
           img {
             @apply  aspect-square w-8/12
                     mx-auto mt-2 mb-1
             ;
           }
         }
-
         .matchSeparator {
           @apply  self-center
           ;
