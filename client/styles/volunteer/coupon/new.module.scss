@@ -5,63 +5,127 @@
           z-0
           ;
 
-}
-
-.fixture {
-  @apply  flex flex-col
-          w-10/12 mx-auto
-  ;
-
-  .housing {
-    @apply  rounded-lg
-            border-2
+  .txtHeader {
+    @apply  py-2
+            text-center text-2xl 
+            underline underline-offset-2
     ;
   }
 
-  input[type="checkbox"] {
-    @apply  hidden
+  .dateSelect {
+    @apply  w-11/12 h-auto
+            mx-auto my-1
+            
     ;
-  }
 
-  input:checked + .housing {
-    box-shadow: 0px 0px 0.5rem 0.25rem $colPrimary;
-  }
-
-  div {
-
-    .fixtureInfo {
-      @apply  text-center
+    .dateInputGroupGroup {
+      @apply  flex flex-row justify-evenly
+              mx-auto
       ;
 
-      .date {
-        @apply text-sm
+      .dateInputGroup {
+        @apply  flex flex-col
         ;
-      }
 
-      .venue {
-        @apply  text-xs
-        ;
+        label {
+          @apply  text-center
+          ;
+        }
+        
+        input[type="date"] {
+          @apply  mx-auto
+                  border-2 border-gray-400 rounded-md
+                  w-full
+          ;
+        }
       }
     }
 
-    .mainContainer {
-      @apply  flex flex-row justify-between
+    .leagueHousing {
+      @apply  flex flex-row
+              w-full
+              justify-evenly
       ;
 
-      .team {
+      input[type="radio"]{
+        @apply  hidden
+        ;
+      }
+      input:checked + .leagueSelectHousing {
+        box-shadow: 0px 0px 0.5rem 0.25rem $colPrimary;
+      }
+
+      .leagueSelectHousing {
+        @apply  w-full my-2 p-1
+                border-2 border-gray-400 rounded-xl
+                flex flex-col
+                text-center
+        ;
+        
+        img {
+          @apply  mx-auto
+          ;
+        }
+      }
+    }
+  }
+
+  .fixture {
+    @apply  flex flex-col
+            w-10/12 mx-auto my-4
+    ;
+
+    .housing {
+      @apply  rounded-lg
+              border-2
+      ;
+    }
+
+    input[type="checkbox"] {
+      @apply  hidden
+      ;
+    }
+
+    input:checked + .housing {
+      box-shadow: 0px 0px 0.5rem 0.25rem $colPrimary;
+    }
+
+    div {
+
+      .fixtureInfo {
         @apply  text-center
         ;
 
-        img {
-          @apply  aspect-square w-8/12
-                  mx-auto mt-2 mb-1
+        .date {
+          @apply text-sm
+          ;
+        }
+
+        .venue {
+          @apply  text-xs
           ;
         }
       }
 
-      .matchSeparator {
-        @apply  self-center
+      .mainContainer {
+        @apply  flex flex-row justify-between
         ;
+
+        .team {
+          @apply  text-center
+          ;
+
+          img {
+            @apply  aspect-square w-8/12
+                    mx-auto mt-2 mb-1
+            ;
+          }
+        }
+
+        .matchSeparator {
+          @apply  self-center
+          ;
+        }
       }
     }
   }
