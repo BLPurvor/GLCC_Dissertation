@@ -14,9 +14,6 @@ router.get(
     let splitLeagues: number[] = [];
     for (let i = 0; i < split.length; i++) {
       // If the input cannot be parsed to a number, return an error to client.
-      // if (isNaN(parseInt(split[i]))) {
-      //   return res.status(401).send("ERLNAN");
-      // }
       splitLeagues[i] = parseInt(split[i]);
     }
 

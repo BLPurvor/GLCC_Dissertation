@@ -25,7 +25,7 @@ export const getWalletByUser = async (user_id: string) => {
     },
     select: {
       id: true,
-      cashValue: true,
+      cash_value: true,
     },
   });
 

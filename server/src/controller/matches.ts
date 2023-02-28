@@ -1,11 +1,6 @@
 import axios from "axios";
 import { config } from "dotenv";
 
-const Leagues = {
-  engDiv1: "39",
-  engDiv2: "40",
-};
-
 type urlOptions = {
   season: number;
   startDate: string;
@@ -18,6 +13,7 @@ export const getBetweenDates = async (
   urlOptions: urlOptions
 ): Promise<unknown> => {
   const options = {
+    method: "GET",
     url: "https://api-football-v1.p.rapidapi.com/v3/fixtures",
     params: {
       league: league,
@@ -49,7 +45,6 @@ export const getBetweenDates = async (
 
 export const getFromList = async (idList: string): Promise<unknown> => {
   const options = {
-    method: "GET",
     url: "https://api-football-v1.p.rapidapi.com/v3/fixtures",
     params: { ids: idList },
     headers: {
