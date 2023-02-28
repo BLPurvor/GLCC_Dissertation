@@ -8,6 +8,7 @@ import { walletInfoFetch, userInfoFetch } from "../../scripts/userInfo";
 import React, { ReactNode } from "react";
 import useSWR from "swr";
 import Loading from "../Loading";
+import Custom404 from "../../pages/404";
 
 interface LayoutProps {
   children?: ReactNode;
@@ -28,14 +29,20 @@ export default function Layout({ children, user_id }: LayoutProps) {
   } = useSWR(`http://localhost:3001/user/${user_id}`, userInfoFetch);
 
   if (wallet_loading || user_loading) return <Loading />;
-  if (wallet_error || user_error) {
+  if (
+    wallet_error ||
+    wallet_data === undefined ||
+    user_error ||
+    user_data === undefined
+  ) {
+    return <Custom404 />;
   }
 
   return (
     <div className={styles.container}>
       <Header user_id={user_id} role={user_data.role} />
       <main>{children}</main>
-      <Footer accountValue={wallet_data.cashValue + 3} />
+      <Footer accountValue={wallet_data.cashValue} />
     </div>
   );
 }
