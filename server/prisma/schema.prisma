@@ -20,8 +20,8 @@ model User {
   id             String     @id @default(uuid()) @map("_id")
   email          String     @unique
   email_verified Boolean    @default(false)
-  firstname      String?
-  lastname       String?
+  first_name     String?
+  last_name      String?
   role           String     @default("user")
   username       String     @unique
   password       String
@@ -41,24 +41,24 @@ model User {
 // }
 
 model Gameweek {
-  id         Int     @id @default(autoincrement()) @map("_id")
-  prize      Int
-  didPayout  Boolean @default(false)
-  author     User    @relation(fields: [authorName], references: [username])
-  authorName String
-  matches    String  @db.VarChar(255)
-  entries    Entry[]
+  id          Int     @id @default(autoincrement()) @map("_id")
+  prize       Int
+  didPayout   Boolean @default(false)
+  author      User    @relation(fields: [author_name], references: [username])
+  author_name String
+  matches     String  @db.VarChar(255)
+  entries     Entry[]
 }
 
 model Entry {
-  id         String   @id @default(uuid()) @map("_id")
-  datetime   DateTime
-  user       User     @relation(fields: [user_id], references: [id])
-  user_id    String
-  won        Boolean  @default(false)
-  prediction String   @db.VarChar(255)
-  Gameweek   Gameweek @relation(fields: [gameweekId], references: [id])
-  gameweekId Int
+  id          String   @id @default(uuid()) @map("_id")
+  datetime    DateTime
+  user        User     @relation(fields: [user_id], references: [id])
+  user_id     String
+  won         Boolean  @default(false)
+  prediction  String   @db.VarChar(255)
+  Gameweek    Gameweek @relation(fields: [gameweek_id], references: [id])
+  gameweek_id Int
 }
 
 // type Tokens {
@@ -68,16 +68,16 @@ model Entry {
 
 model Wallet {
   id           String        @id @default(uuid()) @map("_id")
-  cashValue    Float
+  cash_value   Float
   tokens       String        @db.VarChar(255)
   transactions Transaction[]
   User         User[]
 }
 
 model Transaction {
-  id       String   @id @default(uuid()) @map("_id")
-  amount   Float
-  datetime DateTime
-  Wallet   Wallet   @relation(fields: [walletId], references: [id])
-  walletId String
+  id        String   @id @default(uuid()) @map("_id")
+  amount    Float
+  datetime  DateTime
+  Wallet    Wallet   @relation(fields: [wallet_id], references: [id])
+  wallet_id String
 }
