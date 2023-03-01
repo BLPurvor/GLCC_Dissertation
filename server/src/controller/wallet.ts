@@ -2,7 +2,7 @@ import { prisma } from "../db";
 
 type Wallet = {
   wallet_id: string;
-  cashValue: number;
+  cash_value: number;
   tokens?: string;
 };
 

@@ -39,7 +39,6 @@ export default function Header({ user_id, role }: HeaderProps) {
           alt="Gregson Lane CC Logo"
         />
       </Link>
-      {/* <Link href={`/account/${user_id}`}> */}
       <button
         id="dropdownToggle"
         onClick={() => setAccountStatus(!accountStatus)}
@@ -55,7 +54,6 @@ export default function Header({ user_id, role }: HeaderProps) {
         status={accountStatus}
         statusChange={(value: boolean) => setAccountStatus(value)}
       />
-      {/* </Link> */}
     </div>
   );
 }

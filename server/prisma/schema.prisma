@@ -43,7 +43,7 @@ model User {
 model Gameweek {
   id          Int     @id @default(autoincrement()) @map("_id")
   prize       Int
-  didPayout   Boolean @default(false)
+  did_payout  Boolean @default(false)
   author      User    @relation(fields: [author_name], references: [username])
   author_name String
   matches     String  @db.VarChar(255)
