@@ -32,11 +32,11 @@ export default function NewCoupon() {
 
     const form = document.querySelector("#dateSelect") as HTMLFormElement; // Form with ID = "dateSelect" is defined on page load. ! operator forces program to consider it as non-nullable.
 
-    const url = `http://localhost:3001/matches/between/2022/${form.startDate.value}/${form.endDate.value}/${form.league.value}`; // Concatenate values from the form fields when the query is run. Season not a requirement at this stage of development
+    const url = `http://localhost:3001/matches/between/2022/${form.startDate.value}/${form.endDate.value}/39-40`; // Concatenate values from the form fields when the query is run. Season not a requirement at this stage of development
 
     const result = await axios.get(url).then((res) => res);
 
-    setFixtures(result.data[0].response);
+    setFixtures(result.data);
     // Set state of function array to given object as pulled from returned object.
   }
 
@@ -170,7 +170,7 @@ export default function NewCoupon() {
               />
             </div>
           </div>
-          <div className={styles.leagueHousing}>
+          {/* <div className={styles.leagueHousing}>
             <label htmlFor="leaguePL" className={styles.leagueSelector}>
               <input type="radio" id="leaguePL" name="league" value="39" />
               <div className={styles.leagueSelectHousing}>
@@ -195,7 +195,7 @@ export default function NewCoupon() {
                 EFL Championship
               </div>
             </label>
-          </div>
+          </div> */}
           <input
             type="submit"
             className={styles.dateSubmit}
