@@ -33,7 +33,26 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/create", async (req: Request, res: Response) => {
   const { user_id, matches } = req.body;
 
-  res.send(await create(user_id, JSON.stringify(matches)));
+  let result = await create(user_id, matches);
+
+  switch (result) {
+    case "E00000":
+      return res.status(200).send("Successfully created new coupon.");
+    case "EFURINF":
+      return res.status(401).send("Unauthorised Access.");
+    case "EUNGWP":
+      return res
+        .status(403)
+        .send("Forbidden. Please contact your administrator.");
+    case "ECGWQU":
+      return res
+        .status(400)
+        .send(
+          "Creation of new coupon failed. If this error persists, please contact your administrator."
+        );
+    default:
+      return res.status(500);
+  }
 });
 
 export { router as routeGameweek };

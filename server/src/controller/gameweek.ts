@@ -4,7 +4,7 @@ type Gameweek = {
   id: number;
   prize: Number;
   did_payout?: boolean;
-  authorName?: String;
+  author_name?: String;
   matches: string;
   entries?: String[];
 };
@@ -56,9 +56,9 @@ export const create = async (
     take: -1,
   });
 
-  if (!lastPrize) return "EFGWLP"; // If query fails throw error.
+  // if (!lastPrize) return "EFGWLP"; // If query fails throw error.
 
-  if (lastPrize.did_payout) newPrize = 250;
+  if (!lastPrize || lastPrize.did_payout) newPrize = 250;
   // If last gameweek paid out to an entrant, then set new prize to £250.
   else newPrize = lastPrize.prize + 25;
   // Else, increment by £25.
