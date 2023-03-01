@@ -15,6 +15,7 @@ export const getAllStd = async (): Promise<Gameweek[]> => {
     select: {
       id: true,
       did_payout: true,
+
       matches: true,
       prize: true,
     },
@@ -71,9 +72,10 @@ export const create = async (
     take: -1,
   });
 
-  if (!lastPrize) return "EFGWLP"; // If query fails throw error.
+  // if (!lastPrize) return "EFGWLP"; // If query fails throw error.
 
-  if (lastPrize.did_payout) newPrize = 250;
+  if (!lastPrize || lastPrize.did_payout) newPrize = 250;
+
   // If last gameweek paid out to an entrant, then set new prize to £250.
   else newPrize = lastPrize.prize + 25;
   // Else, increment by £25.
@@ -89,5 +91,5 @@ export const create = async (
 
   if (!query) return "ECGWQU"; // If creation fails, throw error.
 
-  return "1"; // If all succeeds, return success.
+  return "E00000"; // If all succeeds, return success.
 };

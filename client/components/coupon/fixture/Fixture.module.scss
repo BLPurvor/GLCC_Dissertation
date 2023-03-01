@@ -1,0 +1,54 @@
+@import '../../../styles/variables';
+
+.fixture {
+  @apply  flex flex-col
+          w-10/12 mx-auto my-4
+  ;
+
+  .housing {
+    @apply  rounded-lg
+            border-2
+    ;
+  }
+
+  input[type="checkbox"] {
+    @apply  hidden
+    ;
+  }
+
+  input:checked + .housing {
+    box-shadow: 0px 0px 0.5rem 0.25rem $colPrimary;
+  }
+
+  div {
+    .fixtureInfo {
+      @apply  text-center
+      ;
+      .date {
+        @apply text-sm
+        ;
+      }
+      .venue {
+        @apply  text-xs
+        ;
+      }
+    }
+    .mainContainer {
+      @apply  flex flex-row justify-between
+      ;
+      .team {
+        @apply  text-center
+        ;
+        img {
+          @apply  aspect-square w-8/12
+                  mx-auto mt-2 mb-1
+          ;
+        }
+      }
+      .matchSeparator {
+        @apply  self-center
+        ;
+      }
+    }
+  }
+}

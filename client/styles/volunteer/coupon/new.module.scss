@@ -1,0 +1,152 @@
+@import '../../variables';
+
+.container {
+  @apply  w-auto py-24
+          z-0
+          ;
+
+  .txtHeader {
+    @apply  py-2
+            text-center text-2xl 
+            underline underline-offset-2
+    ;
+  }
+
+  .dateSelect {
+    @apply  w-11/12 h-auto
+            mx-auto my-1
+            text-center
+    ;
+
+    .dateInputGroupGroup {
+      @apply  flex flex-row justify-evenly
+              mx-auto
+      ;
+
+      .dateInputGroup {
+        @apply  flex flex-col
+        ;
+
+        label {
+          @apply  text-center
+          ;
+        }
+        
+        input[type="date"] {
+          @apply  mx-auto
+                  border-2 border-gray-400 rounded-md
+                  w-full
+          ;
+        }
+      }
+    }
+     
+    .dateSubmit {
+      background-color: $colPrimary;
+      @apply  mx-auto p-2
+              border-2 border-gray-400 rounded-lg
+              text-white
+      ;
+    }
+
+    .leagueHousing {
+      @apply  flex flex-row
+              w-full
+              justify-evenly
+      ;
+
+      input[type="radio"]{
+        @apply  hidden
+        ;
+      }
+      input:checked + .leagueSelectHousing {
+        box-shadow: 0px 0px 0.5rem 0.25rem $colPrimary;
+      }
+
+      .leagueSelectHousing {
+        @apply  w-full my-2 p-1
+                border-2 border-gray-400 rounded-xl
+                flex flex-col
+                text-center
+        ;
+        
+        img {
+          @apply  mx-auto
+          ;
+        }
+      }
+    }
+  }
+
+  .counter {
+    background-color: $colPrimary;
+    @apply  w-16 aspect-square
+            fixed right-1.5
+            z-20
+            flex items-center
+            rounded-2xl
+            text-white text-center
+    ;
+  }
+
+  .invisible {
+    @apply  hidden
+    ;
+  }
+  .invalidMatches {
+    background-color: $colAccent;
+  }
+
+  .fixtureHousing {
+    @apply  text-center
+    ;
+  }
+
+  .matchweekSubmit {
+    background-color: $colPrimary;
+    @apply  text-white
+              border-2 border-gray-400 rounded-lg
+              p-2
+    ;
+
+    &:disabled {
+      background-color: $colAccent;
+      @apply  text-gray-400
+      ;
+    }
+  }
+
+  .returnMessageContainer {
+    // &[data-returnStatus="0"]{
+    //   @apply hidden;
+    // }
+    &[data-returnStatus="200"]{
+      @apply bg-green-900;
+    }
+    &[data-returnStatus="400"]{
+      @apply bg-red-900;
+    }
+    &[data-returnStatus="401"]{
+      @apply bg-red-900;
+    }
+    &[data-returnStatus="403"]{
+      @apply bg-red-900;
+    }
+
+    @apply  mx-auto w-5/6
+            text-center
+            border-2 rounded-lg
+            text-white
+            bg-green-900
+    ;    
+    
+    .statusCode {
+      // @apply  
+      // ;
+    }
+    .statusMessage {
+      @apply  font-light
+      ;
+    }
+  }
+}

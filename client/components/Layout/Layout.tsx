@@ -29,8 +29,14 @@ export default function Layout({ children, user_id }: LayoutProps) {
   } = useSWR(`http://localhost:3001/user/${user_id}`, userInfoFetch);
 
   if (wallet_loading || user_loading) return <Loading />;
-
-  if (user_error || wallet_error) return <Custom404 />;
+  if (
+    wallet_error ||
+    wallet_data === undefined ||
+    user_error ||
+    user_data === undefined
+  ) {
+    return <Custom404 />;
+}
 
   return (
     <div className={styles.container}>
