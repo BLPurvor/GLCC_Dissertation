@@ -116,56 +116,37 @@
     }
   }
 
-  .fixture {
-    @apply  flex flex-col
-            w-10/12 mx-auto my-4
-    ;
+  .returnMessageContainer {
+    // &[data-returnStatus="0"]{
+    //   @apply hidden;
+    // }
+    &[data-returnStatus="200"]{
+      @apply bg-green-900;
+    }
+    &[data-returnStatus="400"]{
+      @apply bg-red-900;
+    }
+    &[data-returnStatus="401"]{
+      @apply bg-red-900;
+    }
+    &[data-returnStatus="403"]{
+      @apply bg-red-900;
+    }
 
-    .housing {
-      @apply  rounded-lg
-              border-2
+    @apply  mx-auto w-5/6
+            text-center
+            border-2 rounded-lg
+            text-white
+            bg-green-900
+    ;    
+    
+    .statusCode {
+      // @apply  
+      // ;
+    }
+    .statusMessage {
+      @apply  font-light
       ;
-    }
-
-    input[type="checkbox"] {
-      @apply  hidden
-      ;
-    }
-
-    input:checked + .housing {
-      box-shadow: 0px 0px 0.5rem 0.25rem $colPrimary;
-    }
-
-    div {
-      .fixtureInfo {
-        @apply  text-center
-        ;
-        .date {
-          @apply text-sm
-          ;
-        }
-        .venue {
-          @apply  text-xs
-          ;
-        }
-      }
-      .mainContainer {
-        @apply  flex flex-row justify-between
-        ;
-        .team {
-          @apply  text-center
-          ;
-          img {
-            @apply  aspect-square w-8/12
-                    mx-auto mt-2 mb-1
-            ;
-          }
-        }
-        .matchSeparator {
-          @apply  self-center
-          ;
-        }
-      }
     }
   }
 }

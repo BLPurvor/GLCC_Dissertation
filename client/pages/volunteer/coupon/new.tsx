@@ -13,6 +13,7 @@ import { FormEvent, useState } from "react";
 import axios from "axios";
 import { Fixture } from "../../../types/fixture";
 import Image from "next/image";
+import FixtureComponent from "../../../components/coupon/fixture/Fixture";
 
 export const getServerSideProps = withPageAuthRequired(); // Force the user to be actively logged in using Auth0 extension.
 
@@ -20,7 +21,7 @@ export default function NewCoupon() {
   const { user, isLoading } = useUser(); // Get current user information.
   const [fixtures, setFixtures] = useState(Array<Fixture>); // Fixtures array defined through state for conditional rendering of fixture checkboxes.
   const [selection, setSelection] = useState(Array<Element>);
-  const [postError, setPostError] = useState("");
+  const [postError, setPostError] = useState({ status: 0, message: "" });
 
   if (!user || !user.sub) return <Custom404 />; // If user isn't logged in, or if the sub value - which is used for identification - isn't defined, send the user to the error page.
   if (isLoading) return <Loading />; // If the page is still loading logic, render the loading component.
@@ -47,18 +48,38 @@ export default function NewCoupon() {
     let matches: Array<string> = [];
 
     for (let i = 0; i < form.length - 1; i++) {
-      if (form[i].checked) {
-        console.log(form[i].id);
-        matches.push(form[i].id);
+      let element = form[i] as HTMLInputElement;
+
+      if (element.checked) {
+        matches.push(element.id);
       }
     }
 
     if (matches.length !== 8) {
-      return setPostError("not8|Please ensure you select 8 fixtures.");
+      return setPostError({
+        message: "not8|Please ensure you select 8 fixtures.",
+        status: 400,
+      });
     }
 
     let matchweek = matches.join("-");
     console.log(matchweek);
+
+    let url = "http://localhost:3001/gameweek/create";
+
+    let uploadResult = await axios
+      .post(url, {
+        user_id: user_id,
+        matches: matchweek,
+      })
+      .then((res) => res);
+
+    if (uploadResult.status === 200) {
+      setSelection([]);
+      setFixtures([]);
+    }
+    // console.log(uploadResult);
+    setPostError({ message: uploadResult.data, status: uploadResult.status });
   }
 
   function handleRender(fixtures: Fixture[] | string) {
@@ -79,55 +100,7 @@ export default function NewCoupon() {
 
     // If typeof doesn't return a string or an error code, then render the matches.
     return fixtures.map((fixture) => {
-      return (
-        <label
-          key={fixture.fixture.id}
-          htmlFor={fixture.fixture.id.toString()}
-          className={styles.fixture}
-        >
-          <input
-            type="checkbox"
-            id={fixture.fixture.id.toString()}
-            name={fixture.fixture.id.toString()}
-            value={fixture.fixture.id}
-          />
-          <div className={styles.housing}>
-            <div className={styles.fixtureInfo}>
-              <p className={styles.date}>
-                {new Intl.DateTimeFormat("en-GB", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                }).format(new Date(fixture.fixture.date))}
-              </p>
-              <p className={styles.venue}>
-                {fixture.fixture.venue.name}, {fixture.fixture.venue.city}
-              </p>
-            </div>
-            <div className={styles.mainContainer}>
-              <div className={styles.team}>
-                <img
-                  src={`${fixture.teams.home.logo}`}
-                  alt={fixture.teams.home.name}
-                />
-                <h1>{fixture.teams.home.name}</h1>
-              </div>
-
-              <p className={styles.matchSeparator}>v</p>
-
-              <div className={styles.team}>
-                <img
-                  src={`${fixture.teams.away.logo}`}
-                  alt={fixture.teams.away.name}
-                />
-                <h1>{fixture.teams.away.name}</h1>
-              </div>
-            </div>
-          </div>
-        </label>
-      );
+      return <FixtureComponent fixture={fixture} />;
     });
   }
 
@@ -148,6 +121,13 @@ export default function NewCoupon() {
           id="dateSelect"
           className={styles.dateSelect}
         >
+          <div
+            data-returnStatus={postError.status}
+            className={styles.returnMessageContainer}
+          >
+            <span className={styles.statusCode}>{postError.status}: </span>
+            <span className={styles.statusMessage}>{postError.message}</span>
+          </div>
           <div className={styles.dateInputGroupGroup}>
             <div className={styles.dateInputGroup}>
               <label htmlFor="startDate">Fixtures from</label>
@@ -205,7 +185,11 @@ export default function NewCoupon() {
         <div
           className={`${styles.counter} 
           ${selection.length === 0 ? styles.invisible : ""} 
-          ${selection.length < 8 ? styles.invalidMatches : ""}`}
+          ${
+            selection.length < 8 || selection.length > 8
+              ? styles.invalidMatches
+              : ""
+          }`}
         >
           <span className={styles.counterxt}>{selection.length}/8 Matches</span>
         </div>
@@ -217,7 +201,7 @@ export default function NewCoupon() {
         >
           <input
             className={styles.matchweekSubmit}
-            disabled={selection.length < 8}
+            disabled={selection.length < 8 || selection.length > 8}
             hidden={fixtures.length < 1}
             type="submit"
             value="Create Matchweek"
