@@ -30,7 +30,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   // Await server return for fetching gameweek by ID number.
   const result = await getById(id);
 
-  if (result === null) {
+  if (!result || result === undefined) {
     // If server response fails or is empty, throw an error.
     return res.status(500).send("EFGWBID");
   }
