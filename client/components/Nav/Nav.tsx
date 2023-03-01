@@ -59,7 +59,7 @@ export default function Nav({
           </Link>
         </>
       ) : null}
-      <div className={styles.navSeparator} />
+      {/* <div className={styles.navSeparator} />
       <Link
         className={
           router.pathname.startsWith("/about")
@@ -70,7 +70,7 @@ export default function Nav({
         href="/about"
       >
         About Us
-      </Link>{" "}
+      </Link>
       <div className={styles.navSeparator} />
       <Link
         className={
@@ -82,7 +82,7 @@ export default function Nav({
         href="/contact-us"
       >
         Contact Us
-      </Link>
+      </Link> */}
     </nav>
   );
 }
