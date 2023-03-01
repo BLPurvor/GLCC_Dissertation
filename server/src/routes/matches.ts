@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { getBetweenDates, getFromList } from "../controller/matches";
+import { FootballRequest } from "../types/FootballRequest";
 const router = express.Router();
 
 router.get(
@@ -53,14 +54,14 @@ router.get(
       endDate: endDate,
     };
 
+    let fixturesPL = await getBetweenDates(39, options);
+    let fixturesCH = await getBetweenDates(40, options);
     // Request from API server based on specific league information, cannot request multiple leagues through API.
-    var fixturesByLeague = [];
-    for (let i = 0; i < splitLeagues.length; i++) {
-      // Loop through given leagues and return as sections of an array for handling on front end.
-      fixturesByLeague[i] = await getBetweenDates(splitLeagues[i], options);
-    }
 
-    return res.send(fixturesByLeague);
+    var fullList = fixturesPL.response.concat(fixturesCH.response);
+    // Merge arrays for Premier League and EFL Championship into one array
+
+    return res.status(200).send(fullList);
   }
 );
 
