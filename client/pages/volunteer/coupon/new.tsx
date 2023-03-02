@@ -14,6 +14,7 @@ import axios from "axios";
 import { Fixture } from "../../../types/fixture";
 import Image from "next/image";
 import FixtureComponent from "../../../components/coupon/fixture/Fixture";
+import Link from "next/link";
 
 export const getServerSideProps = withPageAuthRequired(); // Force the user to be actively logged in using Auth0 extension.
 
@@ -127,6 +128,7 @@ export default function NewCoupon() {
           >
             <span className={styles.statusCode}>{postError.status}: </span>
             <span className={styles.statusMessage}>{postError.message}</span>
+            <Link href="/volunteer/coupon">View Coupons</Link>
           </div>
           <div className={styles.dateInputGroupGroup}>
             <div className={styles.dateInputGroup}>
