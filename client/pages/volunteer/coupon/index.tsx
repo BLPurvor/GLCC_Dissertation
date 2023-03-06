@@ -10,6 +10,7 @@ import Custom404 from "../../404";
 import { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
+import { Gameweek } from "../../../types/gameweek";
 
 export const getServerSideProps = withPageAuthRequired();
 
@@ -50,6 +51,7 @@ export function Winners() {
       );
 
     default:
+      console.log(data);
       return (
         <div>
           <h1>Something went wrong.</h1>
@@ -73,6 +75,50 @@ export function Results() {
       return (
         <>
           <h1>No Data Found</h1>
+        </>
+      );
+
+    case 200:
+      return (
+        <>
+          <table className={styles.resultsContainer}>
+            <thead>
+              <tr>
+                <th>Week ID</th>
+                <th>Prize</th>
+                <th>Paid out?</th>
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.data.map((matchweek: Gameweek) => {
+                return (
+                  <tr>
+                    <td>{matchweek.id}</td>
+                    <td>
+                      {Intl.NumberFormat("en-GB", {
+                        style: "currency",
+                        currency: "GBP",
+                        currencyDisplay: "narrowSymbol",
+                        maximumFractionDigits: 0,
+                      }).format(matchweek.prize)}
+                    </td>
+                    <td
+                      data-payout={matchweek.did_payout}
+                      className={`${styles.payout}`}
+                    >
+                      {matchweek.did_payout ? "Yes" : "No"}
+                    </td>
+                    <td>
+                      <Link href={`/volunteer/coupon/${matchweek.id}`}>
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </>
       );
 

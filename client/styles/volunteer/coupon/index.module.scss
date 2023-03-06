@@ -29,4 +29,35 @@
       ;
     }
   }
+
+  .resultsContainer {
+    @apply  table table-fixed
+            w-4/5
+            mx-auto my-4
+            text-center
+            border-collapse
+    ;
+
+    th, td {
+      @apply  border-b-2 border-gray-300
+              py-2
+    }
+    
+
+    .payout {
+      @apply  font-semibold
+      ;
+
+      &[data-payout=false] {
+        @apply  text-red-700
+        ;
+      }
+      &[data-payout=true]{
+        @apply  text-green-800
+        ;
+      }
+    }
+
+  
+  }
 }
