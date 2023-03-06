@@ -117,19 +117,19 @@
   }
 
   .returnMessageContainer {
-    // &[data-returnStatus="0"]{
-    //   @apply hidden;
-    // }
-    &[data-returnStatus="200"]{
+    &[data-return-status="0"]{
+      @apply hidden;
+    }
+    &[data-return-status="200"]{
       @apply bg-green-900;
     }
-    &[data-returnStatus="400"]{
+    &[data-return-status="400"]{
       @apply bg-red-900;
     }
-    &[data-returnStatus="401"]{
+    &[data-return-status="401"]{
       @apply bg-red-900;
     }
-    &[data-returnStatus="403"]{
+    &[data-return-status="403"]{
       @apply bg-red-900;
     }
 

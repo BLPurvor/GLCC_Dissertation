@@ -123,7 +123,7 @@ export default function NewCoupon() {
           className={styles.dateSelect}
         >
           <div
-            data-returnStatus={postError.status}
+            data-return-status={postError.status}
             className={styles.returnMessageContainer}
           >
             <span className={styles.statusCode}>{postError.status}: </span>
