@@ -1,7 +1,7 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 import useSWR from "swr";
-import { userInfoFetch, updateInfo } from "../../scripts/userInfo";
+import { userInfoFetch } from "../../scripts/userInfo";
 
 import Layout from "../../components/Layout";
 import Loading from "../../components/Loading";
@@ -11,9 +11,20 @@ import Custom404 from "../404";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { FormEvent, useState } from "react";
 import axios from "axios";
+import { GetServerSideProps } from "next";
 
-export const getServerSideProps = withPageAuthRequired();
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  withPageAuthRequired();
+  let { user_id } = ctx.query;
 
+  const userDetails = await axios.get(`http://localhost:3001/user/${user_id}`);
+
+  return {
+    props: {
+      userDetails: userDetails.data,
+    },
+  };
+};
 const handleUpdateDetails = async (
   e: FormEvent<HTMLFormElement>,
   setMessage: Function,
@@ -43,7 +54,7 @@ const handleUpdateDetails = async (
   return updateResult;
 };
 
-export default function Account() {
+export default function Account({ userDetails }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [returnMsg, setReturnMsg] = useState("");
   const [returnStatus, setReturnStatus] = useState(undefined);
@@ -60,14 +71,6 @@ export default function Account() {
   } else {
     var changes = "Cancel Changes";
   }
-
-  const {
-    data: user_data,
-    error: user_error,
-    isLoading: user_loading,
-  } = useSWR(`http://localhost:3001/user/${user_id}`, userInfoFetch);
-
-  if (user_loading) return <Loading />;
 
   return (
     <Layout user_id={user_id.toString()!}>
@@ -86,7 +89,7 @@ export default function Account() {
             value={user_id}
             readOnly
           />
-          {Object.keys(user_data).map((key) => {
+          {Object.keys(userDetails).map((key) => {
             let words = key.split("_");
             for (let i = 0; i < words.length; i++) {
               words[i] = words[i][0].toUpperCase() + words[i].substring(1);
@@ -105,7 +108,7 @@ export default function Account() {
                   type="text"
                   name={key}
                   id={key}
-                  defaultValue={user_data[key]}
+                  defaultValue={userDetails[key]}
                   placeholder={label}
                 />
               </div>
