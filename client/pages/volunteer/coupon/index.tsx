@@ -9,40 +9,71 @@ import Link from "next/link";
 import Custom404 from "../../404";
 import { useState } from "react";
 import useSWR from "swr";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Gameweek } from "../../../types/gameweek";
+import { GetServerSideProps } from "next";
 
-export const getServerSideProps = withPageAuthRequired();
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  withPageAuthRequired();
 
-const optionSwitch = (option: string) => {
+  const listURL = `http://localhost:3001/gameweek/all`;
+  const listResult = await axios
+    .get<Array<Gameweek>>(listURL)
+    .then((res) => res);
+
+  const wonURL = `http://localhost:3001/gameweek/payout`;
+  const wonResult = await axios.get<Array<Gameweek>>(wonURL).then((res) => res);
+
+  return {
+    props: {
+      AllGameweeks_data: listResult.data,
+      AllGameweeks_status: listResult.status,
+      WonGameweeks_data: wonResult.data,
+      WonGameweeks_status: wonResult.status,
+    },
+  };
+};
+
+const optionSwitch = (
+  option: string,
+  AllGameweeks_data: Array<Gameweek>,
+  AllGameweeks_status: number,
+  WonGameweeks_data: Array<Gameweek>,
+  WonGameweeks_status: number
+) => {
   switch (option) {
     case "":
       return;
     case "res":
-      return <Results />;
+      return (
+        <Results
+          AllGameweeks_data={AllGameweeks_data}
+          AllGameweeks_status={AllGameweeks_status}
+        />
+      );
     case "win":
-      return <Winners />;
+      return (
+        <Winners
+          WonGameweeks_data={WonGameweeks_data}
+          WonGameweeks_status={WonGameweeks_status}
+        />
+      );
     default:
       return;
   }
 };
 
+interface WinnersProps {
+  WonGameweeks_data: Array<Gameweek>;
+  WonGameweeks_status: number;
+}
+
 // Not Implemented //TODO
-export function Winners() {
-  let URL = `http://localhost:3001/gameweek/payout`;
-
-  const fetcher = () =>
-    axios
-      .get(URL)
-      .then((res) => res)
-      .catch((err) => err);
-  const { data, error, isLoading } = useSWR(URL, fetcher);
-
-  if (isLoading || !data) return <Loading />;
-
-  if (error) return <>Error: {error.response.data}</>;
-
-  switch (data.status) {
+export function Winners({
+  WonGameweeks_data,
+  WonGameweeks_status,
+}: WinnersProps) {
+  switch (WonGameweeks_status) {
     case 204:
       return (
         <>
@@ -51,7 +82,6 @@ export function Winners() {
       );
 
     default:
-      console.log(data);
       return (
         <div>
           <h1>Something went wrong.</h1>
@@ -60,17 +90,16 @@ export function Winners() {
   }
 }
 
-export function Results() {
-  let URL = `http://localhost:3001/gameweek/all`;
+interface ResultsProps {
+  AllGameweeks_data: Array<Gameweek>;
+  AllGameweeks_status: number;
+}
 
-  const fetcher = () => axios.get(URL).then((res) => res);
-  const { data, error, isLoading } = useSWR(URL, fetcher);
-
-  if (isLoading || !data) return <Loading />;
-
-  if (error) return <>Error: {error.data}</>;
-
-  switch (data.status) {
+export function Results({
+  AllGameweeks_data,
+  AllGameweeks_status,
+}: ResultsProps) {
+  switch (AllGameweeks_status) {
     case 204:
       return (
         <>
@@ -91,9 +120,9 @@ export function Results() {
               </tr>
             </thead>
             <tbody>
-              {data.data.map((matchweek: Gameweek) => {
+              {AllGameweeks_data.map((matchweek: Gameweek) => {
                 return (
-                  <tr>
+                  <tr key={matchweek.id}>
                     <td>{matchweek.id}</td>
                     <td>
                       {Intl.NumberFormat("en-GB", {
@@ -131,7 +160,14 @@ export function Results() {
   }
 }
 
-export default function Volunteer() {
+interface VolunteerProps {
+  AllGameweeks_data: Array<Gameweek>;
+  AllGameweeks_status: number;
+  WonGameweeks_data: Array<Gameweek>;
+  WonGameweeks_status: number;
+}
+
+export default function Volunteer(props: VolunteerProps) {
   const [option, setOption] = useState("");
   const { user, isLoading } = useUser();
 
@@ -153,7 +189,13 @@ export default function Volunteer() {
           <button onClick={() => setOption("res")}>Results</button>
           <button onClick={() => setOption("win")}>Previous Winners</button>
         </div>
-        {optionSwitch(option)}
+        {optionSwitch(
+          option,
+          props.AllGameweeks_data,
+          props.AllGameweeks_status,
+          props.WonGameweeks_data,
+          props.WonGameweeks_status
+        )}
       </div>
     </Layout>
   );
