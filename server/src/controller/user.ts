@@ -1,16 +1,6 @@
 import { prisma } from "../db";
 import bcrypt from "bcrypt";
-
-type User = {
-  id?: string;
-  username?: string;
-  email?: string;
-  email_verified?: boolean;
-  role?: string;
-  wallet_id?: string;
-  first_name?: string;
-  last_name?: string;
-};
+import { User } from "../types/user";
 
 export const getRoleById = async (user_id: string): Promise<User | string> => {
   // Get from DB ONLY the role data of a given user_id
