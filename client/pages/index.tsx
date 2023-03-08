@@ -12,20 +12,17 @@ import imgLogin from "../assets/shared/login.svg";
 import Loading from "../components/Loading";
 import Layout from "../components/Layout";
 import React from "react";
+import Custom404 from "./404";
 
 export default function Home() {
   const { user, error, isLoading } = useUser();
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return <Loading />;
 
-  if (error) {
-    return <div>{error.message}</div>;
-  }
+  if (error) return <Custom404 />;
 
-  if (user) {
-    const user_id: string = user!.sub!.substring(user!.sub!.indexOf("|") + 1);
+  if (user && user.sub) {
+    const user_id: string = user.sub.substring(user!.sub!.indexOf("|") + 1);
 
     return (
       <div className={liStyles.container}>
@@ -39,7 +36,7 @@ export default function Home() {
     );
   }
 
-  if (!user) {
+  if (!user || !user.sub) {
     return (
       <div className={loStyles.loggedOut}>
         <div className={loStyles.divLogin}>
