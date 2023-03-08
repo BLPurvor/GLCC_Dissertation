@@ -2,14 +2,15 @@
 
 .container{
   background-color: $colPrimary;
-  @apply  w-full h-24
+  height: 10vh;
+  @apply  w-full
           flex flex-row justify-between items-center
           px-3 mt-8
           fixed bottom-0
   ;
 
   .iconHome{
-    @apply  h-16 w-auto
+    @apply  h-4/6 w-auto
     ;
     @media(prefers-color-scheme: light) {
       filter: invert(100%);
@@ -17,7 +18,7 @@
   }
 
   .txtValue{
-    @apply  font-semibold text-4xl
+    @apply  font-semibold text-3xl
     ;
     @media(prefers-color-scheme: light){
       color: $colTertiary;

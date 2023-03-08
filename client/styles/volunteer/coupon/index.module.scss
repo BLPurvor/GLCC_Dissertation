@@ -1,7 +1,7 @@
 @import '../../variables';
 
 .container {
-  @apply  w-auto py-24
+  @apply  w-auto py-20
           z-0
           ;
 
@@ -23,9 +23,10 @@
 
     button {
       background-color: $colPrimary;
-      @apply  mx-3 my-1 px-5 py-1
+      @apply  mx-3 my-1 px-5 py-2
+              border border-gray-300
               rounded-md
-              text-white text-sm
+              text-white text-base
       ;
     }
   }

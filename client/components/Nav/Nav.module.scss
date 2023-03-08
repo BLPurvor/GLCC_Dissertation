@@ -13,15 +13,15 @@ $transitionSpeed: 0.5s;
 }
 
 .container {
-  height: calc(100vh - 12rem);
+  height: 80vh;
+  margin-top: -0.35rem;
   background: rgba($colPrimary, 0.64);
   backdrop-filter: blur(4px);
-  margin-left: -0.75rem;
   overflow-y: scroll;
   @apply  z-50 absolute
           w-full 
           flex flex-col items-center
-          pt-6
+          pt-6 -ml-3 
   ;
 
   .navSeparator {

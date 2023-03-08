@@ -2,14 +2,16 @@
 
 .container {
   background-color: $colPrimary;
-  @apply  h-24 w-full px-3
+  height: 10vh;
+  @apply  w-full px-3
           flex justify-between items-center
           fixed top-0
   ;
 
   .wrapBurger {
     .iconBurger{
-      @apply  h-16 w-auto aspect-square
+      height: 7vh;
+      @apply  w-auto aspect-square
               my-4
               flex flex-col justify-evenly
       ;
@@ -28,12 +30,14 @@
   }
 
   .imgLogo{
-    @apply  h-16 w-auto
+    height: 7vh;
+    @apply  w-auto
     ;
   }
 
   .iconUser{
-    @apply  h-16 w-auto
+    height: 7vh;
+    @apply  w-auto
     ;
     @media(prefers-color-scheme : light){
       filter: invert(100%)
