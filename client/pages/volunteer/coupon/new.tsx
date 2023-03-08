@@ -4,15 +4,11 @@ import Layout from "../../../components/Layout";
 import styles from "../../../styles/volunteer/coupon/new.module.scss";
 import Custom404 from "../../404";
 
-import imgPL from "../../../assets/shared/football/pl.png";
-import imgCH from "../../../assets/shared/football/ch.png";
-
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { FormEvent, useState } from "react";
 import axios from "axios";
 import { Fixture } from "../../../types/fixture";
-import Image from "next/image";
 import FixtureComponent from "../../../components/coupon/fixture/Fixture";
 import Link from "next/link";
 
