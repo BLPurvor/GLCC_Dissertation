@@ -81,6 +81,50 @@ export function Winners({
         </>
       );
 
+    case 200:
+      return (
+        <>
+          <table className={styles.resultsContainer}>
+            <thead>
+              <tr>
+                <th>Week ID</th>
+                <th>Prize</th>
+                <th>Paid out?</th>
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              {WonGameweeks_data.map((matchweek: Gameweek) => {
+                return (
+                  <tr key={matchweek.id}>
+                    <td>{matchweek.id}</td>
+                    <td>
+                      {Intl.NumberFormat("en-GB", {
+                        style: "currency",
+                        currency: "GBP",
+                        currencyDisplay: "narrowSymbol",
+                        maximumFractionDigits: 0,
+                      }).format(matchweek.prize)}
+                    </td>
+                    <td
+                      data-payout={matchweek.did_payout}
+                      className={`${styles.payout}`}
+                    >
+                      {matchweek.did_payout ? "Yes" : "No"}
+                    </td>
+                    <td>
+                      <Link href={`/volunteer/coupon/${matchweek.id}`}>
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </>
+      );
+
     default:
       return (
         <div>
