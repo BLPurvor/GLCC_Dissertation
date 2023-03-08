@@ -12,6 +12,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { FormEvent, useState } from "react";
 import axios from "axios";
 import { GetServerSideProps } from "next";
+import { User } from "../../types/user";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   withPageAuthRequired();
@@ -25,6 +26,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
+
+interface AccountProps {
+  userDetails: User;
+}
+
 const handleUpdateDetails = async (
   e: FormEvent<HTMLFormElement>,
   setMessage: Function,
@@ -54,7 +60,7 @@ const handleUpdateDetails = async (
   return updateResult;
 };
 
-export default function Account({ userDetails }) {
+export default function Account({ userDetails }: AccountProps) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [returnMsg, setReturnMsg] = useState("");
   const [returnStatus, setReturnStatus] = useState(undefined);
