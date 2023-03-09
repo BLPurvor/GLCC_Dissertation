@@ -60,7 +60,6 @@ export const getServerSideProps = withPageAuthRequired({
     };
   },
 });
-// };
 
 interface CouponProps {
   gwData: Gameweek;
