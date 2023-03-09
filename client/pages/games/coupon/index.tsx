@@ -77,7 +77,7 @@ export default function Coupon({
   prevEntry,
 }: CouponProps) {
   const [isEntryComplete, setIsEntryComplete] = useState(false);
-  const [canChange, setCanChange] = useState(false);
+  const [canChange, setCanChange] = useState(typeof prevEntry === "string");
   const [entrySubmit, setEntrySubmit] = useState({
     status: 0,
     message: "Sample",
