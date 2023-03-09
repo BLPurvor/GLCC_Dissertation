@@ -4,7 +4,9 @@ import { Fixture } from "../../../types/fixture";
 
 import styles from "../../../styles/games/coupon/index.module.scss";
 import arrowLeft from "../../../assets/shared/arrowLeft.svg";
+import disabledArrowLeft from "../../../assets/shared/disabledArrowLeft.svg";
 import arrowRight from "../../../assets/shared/arrowRight.svg";
+import disabledArrowRight from "../../../assets/shared/disabledArrowRight.svg";
 
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
@@ -235,17 +237,15 @@ export default function Coupon({
               href={gwData.id - 1 > 0 ? `/games/coupon/${gwData.id - 1}` : ""}
             >
               <Image
-                className={`${styles.navArrow} ${
-                  gwData.id - 1 > 0 ? "" : styles.disabledArrow
-                }`}
-                src={arrowLeft}
+                className={styles.navArrow}
+                src={gwData.id - 1 > 0 ? disabledArrowLeft : arrowLeft}
                 alt="Go back a round."
               />
             </Link>
             <h1 className={styles.gwHeader}>Round {gwData.id}</h1>
             <Image
-              className={`${styles.navArrow} ${styles.disabledArrow}`}
-              src={arrowRight}
+              className={styles.navArrow}
+              src={disabledArrowRight}
               alt="Go forward a round."
             />
           </div>
