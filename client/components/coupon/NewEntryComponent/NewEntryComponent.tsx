@@ -1,12 +1,23 @@
+import { Entry } from "../../../types/entry";
 import { Fixture } from "../../../types/fixture";
 
-import styles from "./EntryComponent.module.scss";
+import styles from "./NewEntryComponent.module.scss";
 
 interface EntryComponentProps {
   match: Fixture;
+  prevEntry: Entry["prediction"];
+  index: number;
+  canChange: boolean;
 }
 
-export default function EntryComponent({ match }: EntryComponentProps) {
+export default function NewEntryComponent({
+  match,
+  prevEntry,
+  index,
+  canChange,
+}: EntryComponentProps) {
+  let prediction = Object.values(prevEntry[index]).join("-");
+
   return (
     <div
       id={match.fixture.id.toString()}
@@ -15,7 +26,7 @@ export default function EntryComponent({ match }: EntryComponentProps) {
     >
       <div className={styles.matchInfo}>
         <p className={styles.date}>
-          {/* <!--Date changed to human readable format */}
+          {/* Date changed to human readable format */}
           {new Intl.DateTimeFormat("en-GB", {
             hour: "2-digit",
             minute: "2-digit",
@@ -41,12 +52,17 @@ export default function EntryComponent({ match }: EntryComponentProps) {
       </div>
       <div className={styles.matchPredictor}>
         <fieldset id={match.fixture.id.toString()}>
-          <label htmlFor={`${match.fixture.id}-Home`}>
+          <label htmlFor={`${match.fixture.id}-home`}>
             <input
               type="radio"
               value="home"
               name={match.fixture.id.toString()}
-              id={`${match.fixture.id}-Home`}
+              id={`${match.fixture.id}-home`}
+              checked={
+                canChange
+                  ? undefined
+                  : `${match.fixture.id}-home` === prediction
+              }
             />
             <div className={styles.button}>
               {match.teams.home.name}
@@ -54,21 +70,31 @@ export default function EntryComponent({ match }: EntryComponentProps) {
               Wins
             </div>
           </label>
-          <label htmlFor={`${match.fixture.id}-Draw`}>
+          <label htmlFor={`${match.fixture.id}-draw`}>
             <input
               type="radio"
               value="draw"
               name={match.fixture.id.toString()}
-              id={`${match.fixture.id}-Draw`}
+              id={`${match.fixture.id}-draw`}
+              checked={
+                canChange
+                  ? undefined
+                  : `${match.fixture.id}-draw` === prediction
+              }
             />
             <div className={styles.button}>Draw</div>
           </label>
-          <label htmlFor={`${match.fixture.id}-Away`}>
+          <label htmlFor={`${match.fixture.id}-away`}>
             <input
               type="radio"
               value="away"
               name={match.fixture.id.toString()}
-              id={`${match.fixture.id}-Away`}
+              id={`${match.fixture.id}-away`}
+              checked={
+                canChange
+                  ? undefined
+                  : `${match.fixture.id}-away` === prediction
+              }
             />
             <div className={styles.button}>
               {match.teams.away.name}
