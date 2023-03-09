@@ -18,6 +18,24 @@ export const entrySubmit = async (entry: Entry): Promise<string> => {
   return "E00000";
 };
 
+export const entryUpdate = async (entry: Entry): Promise<string> => {
+  const result = await prisma.entry.update({
+    where: {
+      id: entry._id,
+    },
+    data: {
+      datetime: entry.datetime,
+      won: entry.won,
+      gameweek_id: entry.gameweek_id,
+      prediction: JSON.stringify(entry.prediction),
+    },
+  });
+
+  if (!result) return "EUEBGW";
+
+  return "E00000";
+};
+
 export const getEntryById = async (
   user_id: string,
   gw_id: number
@@ -35,4 +53,23 @@ export const getEntryById = async (
   if (!result) return "EFGWBU";
 
   return JSON.parse(result.prediction);
+};
+
+export const getPrevEntry = async (
+  user_id: string,
+  gw_id: number
+): Promise<string> => {
+  const result = await prisma.entry.findFirst({
+    select: {
+      id: true,
+    },
+    where: {
+      user_id: user_id,
+      gameweek_id: gw_id,
+    },
+  });
+
+  if (!result) return "EFEIDU";
+
+  return result.id;
 };
