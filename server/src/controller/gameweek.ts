@@ -29,6 +29,7 @@ export const getLatest = async (): Promise<Gameweek | string> => {
       id: true,
       matches: true,
       prize: true,
+      deadline: true,
     },
     take: -1,
   });
