@@ -82,7 +82,7 @@ export default function Coupon({
     message: "Sample",
   });
 
-  const isDeadlinePassed: boolean = new Date() < new Date(gwData.deadline);
+  const isDeadlinePassed: boolean = new Date() > new Date(gwData.deadline);
 
   switch (gwStatus) {
     case 204:
@@ -248,6 +248,18 @@ export default function Coupon({
               src={arrowRight}
               alt="Go forward a round."
             />
+          </div>
+          <div className={styles.deadline}>
+            <h1 className={styles.deadlineHeader}>Entry Deadline</h1>
+            <p className={styles.deadlineBody}>
+              {new Intl.DateTimeFormat("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              }).format(new Date(gwData.deadline))}
+            </p>
           </div>
           <div
             className={styles.errorContainer}
