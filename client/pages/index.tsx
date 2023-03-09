@@ -30,7 +30,6 @@ interface HomeProps {
 }
 
 export default function Home({ user_id }: HomeProps) {
-  console.log(user_id);
   if (user_id) {
     return (
       <div className={liStyles.container}>
