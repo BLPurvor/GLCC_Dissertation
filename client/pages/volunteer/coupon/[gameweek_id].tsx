@@ -5,7 +5,6 @@ import { Fixture } from "../../../types/fixture";
 import styles from "../../../styles/volunteer/coupon/[gameweek_id].module.scss";
 
 import { useState } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
 
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";

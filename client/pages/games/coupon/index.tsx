@@ -1,4 +1,3 @@
-import Loading from "../../../components/Loading";
 import Layout from "../../../components/Layout";
 import { Gameweek } from "../../../types/gameweek";
 import { Fixture } from "../../../types/fixture";
@@ -7,14 +6,7 @@ import styles from "../../../styles/games/coupon/index.module.scss";
 import arrowLeft from "../../../assets/shared/arrowLeft.svg";
 import arrowRight from "../../../assets/shared/arrowRight.svg";
 
-import { useUser } from "@auth0/nextjs-auth0/client";
-import {
-  Claims,
-  GetSession,
-  getSession,
-  withPageAuthRequired,
-} from "@auth0/nextjs-auth0";
-import useSWR from "swr";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 import axios, { AxiosResponse } from "axios";
 import Image from "next/image";
@@ -23,7 +15,6 @@ import { FormEvent, useState } from "react";
 import EntryComponent from "../../../components/coupon/EntryComponent";
 import { Entry } from "../../../types/entry";
 import { v4 as uuidv4 } from "uuid";
-import Custom404 from "../../404";
 import { getDefaultServerProps } from "../../../scripts/serverSideProps";
 
 export const getServerSideProps = withPageAuthRequired({
