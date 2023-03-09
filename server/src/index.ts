@@ -5,6 +5,7 @@ import { routeUser } from "./routes/user";
 import { routeGameweek } from "./routes/gameweek";
 import { routeMatches } from "./routes/matches";
 import { routeWallet } from "./routes/wallet";
+import { routeEntry } from "./routes/entry";
 
 const PORT = process.env.APP_PORT;
 
@@ -21,6 +22,7 @@ app.use("/user/", routeUser);
 app.use("/gameweek/", routeGameweek);
 app.use("/matches/", routeMatches);
 app.use("/wallet", routeWallet);
+app.use("/entry", routeEntry);
 
 try {
   app.listen(PORT, () => {

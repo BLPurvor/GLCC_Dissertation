@@ -1,8 +1,8 @@
 import { Fixture } from "../../../types/fixture";
 
-import styles from "./Fixture.module.scss";
+import styles from "./FixtureSelector.module.scss";
 
-export default function FixtureComponent(props: { fixture: Fixture }) {
+export default function FixtureSelector(props: { fixture: Fixture }) {
   const fixture = props.fixture;
   return (
     <label

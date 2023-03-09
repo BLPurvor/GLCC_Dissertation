@@ -1,5 +1,11 @@
 import express, { Request, Response } from "express";
-import { getAllStd, getById, create, getPayout } from "../controller/gameweek";
+import {
+  getAllStd,
+  getById,
+  create,
+  getPayout,
+  getLatest,
+} from "../controller/gameweek";
 const router = express.Router();
 
 router.get("/all", async (req: Request, res: Response) => {
@@ -11,6 +17,15 @@ router.get("/all", async (req: Request, res: Response) => {
     return res.status(204).send("No Content");
   }
   // Else return all gameweek information (Or error thrown by controller)
+  return res.status(200).send(result);
+});
+
+router.get("/latest", async (req: Request, res: Response) => {
+  const result = await getLatest();
+
+  if (!result) return res.send(204).send("No Content");
+  if (typeof result === "string") return res.status(500).send("Server Error");
+
   return res.status(200).send(result);
 });
 
@@ -40,9 +55,9 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.post("/create", async (req: Request, res: Response) => {
-  const { user_id, matches } = req.body;
+  const { user_id, matches, deadline } = req.body;
 
-  let result = await create(user_id, matches);
+  let result = await create(user_id, matches, deadline);
 
   switch (result) {
     case "E00000":

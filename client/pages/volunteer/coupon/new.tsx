@@ -9,8 +9,8 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { FormEvent, useState } from "react";
 import axios from "axios";
 import { Fixture } from "../../../types/fixture";
-import FixtureComponent from "../../../components/coupon/fixture/Fixture";
 import Link from "next/link";
+import FixtureSelector from "../../../components/coupon/FixtureSelector/FixtureSelector";
 
 export const getServerSideProps = withPageAuthRequired(); // Force the user to be actively logged in using Auth0 extension.
 
@@ -42,6 +42,7 @@ export default function NewCoupon() {
     e.preventDefault();
 
     let form = document.querySelector("#fixtureSelect") as HTMLFormElement;
+    let deadline = form[0] as HTMLInputElement;
     let matches: Array<string> = [];
 
     for (let i = 0; i < form.length - 1; i++) {
@@ -60,14 +61,14 @@ export default function NewCoupon() {
     }
 
     let matchweek = matches.join("-");
-    console.log(matchweek);
 
     let url = "http://localhost:3001/gameweek/create";
 
     let uploadResult = await axios
       .post(url, {
-        user_id: user_id,
+        user_id,
         matches: matchweek,
+        deadline: deadline.value,
       })
       .then((res) => res);
 
@@ -75,7 +76,7 @@ export default function NewCoupon() {
       setSelection([]);
       setFixtures([]);
     }
-    // console.log(uploadResult);
+
     setPostError({ message: uploadResult.data, status: uploadResult.status });
   }
 
@@ -97,7 +98,7 @@ export default function NewCoupon() {
 
     // If typeof doesn't return a string or an error code, then render the matches.
     return fixtures.map((fixture) => {
-      return <FixtureComponent fixture={fixture} />;
+      return <FixtureSelector fixture={fixture} />;
     });
   }
 
@@ -148,32 +149,6 @@ export default function NewCoupon() {
               />
             </div>
           </div>
-          {/* <div className={styles.leagueHousing}>
-            <label htmlFor="leaguePL" className={styles.leagueSelector}>
-              <input type="radio" id="leaguePL" name="league" value="39" />
-              <div className={styles.leagueSelectHousing}>
-                <Image
-                  width={50}
-                  height={50}
-                  src={imgPL}
-                  alt="The Premier League"
-                />
-                The Premier League
-              </div>
-            </label>
-            <label htmlFor="leagueCH" className={styles.leagueSelector}>
-              <input type="radio" id="leagueCH" name="league" value="40" />
-              <div className={styles.leagueSelectHousing}>
-                <Image
-                  width={50}
-                  height={50}
-                  src={imgCH}
-                  alt="The EFL Championship"
-                />
-                EFL Championship
-              </div>
-            </label>
-          </div> */}
           <input
             type="submit"
             className={styles.dateSubmit}
@@ -197,6 +172,15 @@ export default function NewCoupon() {
           onSubmit={handleCreation}
           onChange={handleUpdate}
         >
+          <label htmlFor="deadline" hidden={fixtures.length < 1}>
+            Submission Deadline
+            <input
+              required
+              className={styles.deadline}
+              type="datetime-local"
+              hidden={fixtures.length < 1}
+            />
+          </label>
           <input
             className={styles.matchweekSubmit}
             disabled={selection.length < 8 || selection.length > 8}

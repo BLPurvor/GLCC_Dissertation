@@ -1,5 +1,3 @@
-import { useUser } from "@auth0/nextjs-auth0/client";
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,21 +7,30 @@ import liStyles from "../styles/Home.module.scss";
 import imgLogo from "../assets/brand/logo.png";
 import imgLogin from "../assets/shared/login.svg";
 
-import Loading from "../components/Loading";
 import Layout from "../components/Layout";
 import React from "react";
-import Custom404 from "./404";
 
-export default function Home() {
-  const { user, error, isLoading } = useUser();
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { getDefaultServerProps } from "../scripts/serverSideProps";
 
-  if (isLoading) return <Loading />;
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps(ctx) {
+    const user_id = await getDefaultServerProps(ctx);
 
-  if (error) return <Custom404 />;
+    return {
+      props: {
+        user_id,
+      },
+    };
+  },
+});
 
-  if (user && user.sub) {
-    const user_id: string = user.sub.substring(user!.sub!.indexOf("|") + 1);
+interface HomeProps {
+  user_id: string;
+}
 
+export default function Home({ user_id }: HomeProps) {
+  if (user_id) {
     return (
       <div className={liStyles.container}>
         <Layout user_id={user_id}>
@@ -36,7 +43,7 @@ export default function Home() {
     );
   }
 
-  if (!user || !user.sub) {
+  if (!user_id) {
     return (
       <div className={loStyles.loggedOut}>
         <div className={loStyles.divLogin}>

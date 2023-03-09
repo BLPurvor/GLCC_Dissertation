@@ -15,11 +15,26 @@ export const getAllStd = async (): Promise<Gameweek[]> => {
     select: {
       id: true,
       did_payout: true,
-
       matches: true,
       prize: true,
     },
   });
+
+  return result;
+};
+
+export const getLatest = async (): Promise<Gameweek | string> => {
+  const result = await prisma.gameweek.findFirst({
+    select: {
+      id: true,
+      matches: true,
+      prize: true,
+      deadline: true,
+    },
+    take: -1,
+  });
+
+  if (result === null) return "EFLGWI";
 
   return result;
 };
@@ -53,7 +68,8 @@ export const getById = async (id: number): Promise<Gameweek | string> => {
 
 export const create = async (
   user_id: string,
-  matches: string
+  matches: string,
+  deadline: string
 ): Promise<String> => {
   // Fetch user information to see if user is permitted to create gameweeks.
   const user = await prisma.user.findFirst({
@@ -75,7 +91,6 @@ export const create = async (
   // if (!lastPrize) return "EFGWLP"; // If query fails throw error.
 
   if (!lastPrize || lastPrize.did_payout) newPrize = 250;
-
   // If last gameweek paid out to an entrant, then set new prize to £250.
   else newPrize = lastPrize.prize + 25;
   // Else, increment by £25.
@@ -86,6 +101,7 @@ export const create = async (
       author_name: user.username,
       prize: newPrize,
       matches: matches,
+      deadline: deadline,
     },
   });
 

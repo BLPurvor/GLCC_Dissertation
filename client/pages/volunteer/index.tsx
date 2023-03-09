@@ -7,17 +7,25 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import Link from "next/link";
 import Custom404 from "../404";
+import { getDefaultServerProps } from "../../scripts/serverSideProps";
 
-export const getServerSideProps = withPageAuthRequired();
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps(ctx) {
+    const user_id = await getDefaultServerProps(ctx);
 
-export default function Volunteer() {
-  const { user, isLoading } = useUser();
+    return {
+      props: {
+        user_id,
+      },
+    };
+  },
+});
 
-  if (!user || !user.sub) return <Custom404 />;
-  if (isLoading) return <Loading />;
+interface VolunteerProps {
+  user_id: string;
+}
 
-  const user_id: string = user.sub.substring(user.sub.indexOf("|") + 1);
-
+export default function Volunteer({ user_id }: VolunteerProps) {
   return (
     <Layout user_id={user_id}>
       <div className={styles.container}>
