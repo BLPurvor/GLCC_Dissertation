@@ -9,8 +9,8 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { FormEvent, useState } from "react";
 import axios from "axios";
 import { Fixture } from "../../../types/fixture";
-import FixtureComponent from "../../../components/coupon/fixture/Fixture";
 import Link from "next/link";
+import FixtureSelector from "../../../components/coupon/FixtureSelector/FixtureSelector";
 
 export const getServerSideProps = withPageAuthRequired(); // Force the user to be actively logged in using Auth0 extension.
 
@@ -97,7 +97,7 @@ export default function NewCoupon() {
 
     // If typeof doesn't return a string or an error code, then render the matches.
     return fixtures.map((fixture) => {
-      return <FixtureComponent fixture={fixture} />;
+      return <FixtureSelector fixture={fixture} />;
     });
   }
 

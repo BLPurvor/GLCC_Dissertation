@@ -12,27 +12,32 @@ import useSWR from "swr";
 import axios, { AxiosResponse } from "axios";
 import { Gameweek } from "../../../types/gameweek";
 import { GetServerSideProps } from "next";
+import { getDefaultServerProps } from "../../../scripts/serverSideProps";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  withPageAuthRequired();
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps(ctx) {
+    const user_id = await getDefaultServerProps(ctx);
+    const listURL = `http://localhost:3001/gameweek/all`;
+    const listResult = await axios
+      .get<Array<Gameweek>>(listURL)
+      .then((res) => res);
 
-  const listURL = `http://localhost:3001/gameweek/all`;
-  const listResult = await axios
-    .get<Array<Gameweek>>(listURL)
-    .then((res) => res);
+    const wonURL = `http://localhost:3001/gameweek/payout`;
+    const wonResult = await axios
+      .get<Array<Gameweek>>(wonURL)
+      .then((res) => res);
 
-  const wonURL = `http://localhost:3001/gameweek/payout`;
-  const wonResult = await axios.get<Array<Gameweek>>(wonURL).then((res) => res);
-
-  return {
-    props: {
-      AllGameweeks_data: listResult.data,
-      AllGameweeks_status: listResult.status,
-      WonGameweeks_data: wonResult.data,
-      WonGameweeks_status: wonResult.status,
-    },
-  };
-};
+    return {
+      props: {
+        AllGameweeks_data: listResult.data,
+        AllGameweeks_status: listResult.status,
+        WonGameweeks_data: wonResult.data,
+        WonGameweeks_status: wonResult.status,
+        user_id,
+      },
+    };
+  },
+});
 
 const optionSwitch = (
   option: string,
@@ -204,21 +209,22 @@ export function Results({
   }
 }
 
-interface VolunteerProps {
+interface VolunteerCouponProps {
   AllGameweeks_data: Array<Gameweek>;
   AllGameweeks_status: number;
   WonGameweeks_data: Array<Gameweek>;
   WonGameweeks_status: number;
+  user_id: string;
 }
 
-export default function Volunteer(props: VolunteerProps) {
+export default function Volunteer({
+  AllGameweeks_data,
+  AllGameweeks_status,
+  WonGameweeks_data,
+  WonGameweeks_status,
+  user_id,
+}: VolunteerCouponProps) {
   const [option, setOption] = useState("");
-  const { user, isLoading } = useUser();
-
-  if (!user || !user.sub) return <Custom404 />;
-  if (isLoading) return <Loading />;
-
-  const user_id: string = user.sub.substring(user.sub.indexOf("|") + 1);
 
   return (
     <Layout user_id={user_id}>
@@ -235,10 +241,10 @@ export default function Volunteer(props: VolunteerProps) {
         </div>
         {optionSwitch(
           option,
-          props.AllGameweeks_data,
-          props.AllGameweeks_status,
-          props.WonGameweeks_data,
-          props.WonGameweeks_status
+          AllGameweeks_data,
+          AllGameweeks_status,
+          WonGameweeks_data,
+          WonGameweeks_status
         )}
       </div>
     </Layout>

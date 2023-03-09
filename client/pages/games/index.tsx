@@ -6,18 +6,24 @@ import styles from "../../styles/games/index.module.scss";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import Link from "next/link";
+import { getDefaultServerProps } from "../../scripts/serverSideProps";
 
-export const getServerSideProps = withPageAuthRequired();
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps(ctx) {
+    const user_id = await getDefaultServerProps(ctx);
 
-export default function Games() {
-  const { user, isLoading } = useUser();
+    return {
+      props: {
+        user_id,
+      },
+    };
+  },
+});
+interface GamesProps {
+  user_id: string;
+}
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  const user_id: string = user!.sub!.substring(user!.sub!.indexOf("|") + 1);
-
+export default function Games({ user_id }: GamesProps) {
   return (
     <Layout user_id={user_id}>
       <div className={styles.container}>
