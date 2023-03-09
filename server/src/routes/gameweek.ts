@@ -55,9 +55,9 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.post("/create", async (req: Request, res: Response) => {
-  const { user_id, matches } = req.body;
+  const { user_id, matches, deadline } = req.body;
 
-  let result = await create(user_id, matches);
+  let result = await create(user_id, matches, deadline);
 
   switch (result) {
     case "E00000":

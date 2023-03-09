@@ -67,7 +67,8 @@ export const getById = async (id: number): Promise<Gameweek | string> => {
 
 export const create = async (
   user_id: string,
-  matches: string
+  matches: string,
+  deadline: string
 ): Promise<String> => {
   // Fetch user information to see if user is permitted to create gameweeks.
   const user = await prisma.user.findFirst({
@@ -99,6 +100,7 @@ export const create = async (
       author_name: user.username,
       prize: newPrize,
       matches: matches,
+      deadline: deadline,
     },
   });
 
