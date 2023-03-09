@@ -52,13 +52,13 @@ model Gameweek {
 }
 
 model Entry {
-  id          String   @id @default(uuid()) @map("_id")
-  datetime    DateTime
-  user        User     @relation(fields: [user_id], references: [id])
+  id          String    @id @default(uuid()) @map("_id")
+  datetime    String
+  user        User?     @relation(fields: [user_id], references: [id])
   user_id     String
-  won         Boolean  @default(false)
-  prediction  String   @db.VarChar(1023)
-  Gameweek    Gameweek @relation(fields: [gameweek_id], references: [id])
+  won         Boolean   @default(false)
+  prediction  String    @db.VarChar(1023)
+  Gameweek    Gameweek? @relation(fields: [gameweek_id], references: [id])
   gameweek_id Int
 }
 
