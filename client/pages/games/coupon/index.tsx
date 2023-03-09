@@ -12,7 +12,7 @@ import axios, { AxiosResponse } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import EntryComponent from "../../../components/coupon/EntryComponent";
+import NewEntryComponent from "../../../components/coupon/NewEntryComponent";
 import { Entry } from "../../../types/entry";
 import { v4 as uuidv4 } from "uuid";
 import { getDefaultServerProps } from "../../../scripts/serverSideProps";
@@ -76,6 +76,13 @@ export default function Coupon({
   prevEntry,
 }: CouponProps) {
   const [isEntryComplete, setIsEntryComplete] = useState(false);
+  const [canChange, setCanChange] = useState(false);
+  const [entrySubmit, setEntrySubmit] = useState({
+    status: 0,
+    message: "Sample",
+  });
+
+  const isDeadlinePassed: boolean = new Date() < new Date(gwData.deadline);
 
   switch (gwStatus) {
     case 204:
@@ -136,6 +143,11 @@ export default function Coupon({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const prevEntryURL = `http://localhost:3001/entry/prevEntry/${gwData.id}/${user_id}`;
+    const prevEntryCheck = await axios.get(prevEntryURL).then((res) => res);
+
+    console.log(prevEntryCheck);
+
     let entryNodeList = document.querySelectorAll(
       "input[type='radio']:checked"
     );
@@ -154,17 +166,55 @@ export default function Coupon({
       });
     });
 
-    let entry: Entry = {
-      _id: uuidv4(),
-      datetime: new Date().toISOString(),
-      user_id: user_id,
-      won: false,
-      gameweek_id: gwData.id,
-      prediction: prediction,
-    };
+    if (prevEntryCheck.status === 200) {
+      let entry: Entry = {
+        _id: prevEntryCheck.data,
+        datetime: new Date().toISOString(),
+        user_id: user_id,
+        won: false,
+        gameweek_id: gwData.id,
+        prediction: prediction,
+      };
 
-    const entryURL = "http://localhost:3001/entry/submit";
-    const result = await axios.post(entryURL, { entry }).then((res) => res);
+      const entryURL = `http://localhost:3001/entry/update`;
+      const result = await axios.post(entryURL, { entry }).then((res) => res);
+
+      if (result) {
+        switch (result.status) {
+          case 200:
+            setEntrySubmit({ status: result.status, message: result.data });
+            break;
+
+          default:
+            setEntrySubmit({ status: result.status, message: result.data });
+            break;
+        }
+      }
+    } else {
+      let entry: Entry = {
+        _id: uuidv4(),
+        datetime: new Date().toISOString(),
+        user_id: user_id,
+        won: false,
+        gameweek_id: gwData.id,
+        prediction: prediction,
+      };
+
+      const entryURL = "http://localhost:3001/entry/submit";
+      const result = await axios.post(entryURL, { entry }).then((res) => res);
+
+      if (result) {
+        switch (result.status) {
+          case 200:
+            setEntrySubmit({ status: result.status, message: result.data });
+            break;
+
+          default:
+            setEntrySubmit({ status: result.status, message: result.data });
+            break;
+        }
+      }
+    }
   };
 
   const handleChange = async (e: FormEvent<HTMLFormElement>) => {
@@ -181,9 +231,13 @@ export default function Coupon({
         <h1 className={styles.txtHeader}>Football Predictor</h1>
         <div className={styles.gwContainer}>
           <div className={styles.headerBar}>
-            <Link href={`/games/coupon/${gwData.id - 1}`}>
+            <Link
+              href={gwData.id - 1 > 0 ? `/games/coupon/${gwData.id - 1}` : ""}
+            >
               <Image
-                className={styles.navArrow}
+                className={`${styles.navArrow} ${
+                  gwData.id - 1 > 0 ? "" : styles.disabledArrow
+                }`}
                 src={arrowLeft}
                 alt="Go back a round."
               />
@@ -195,6 +249,28 @@ export default function Coupon({
               alt="Go forward a round."
             />
           </div>
+          <div
+            className={styles.errorContainer}
+            data-deadline={isDeadlinePassed}
+            hidden={!isDeadlinePassed}
+          >
+            <h1 className={styles.errorHeader}>You're too late!</h1>
+            <p className={styles.errorBody}>
+              The deadline for this gameweek has passed.
+            </p>
+          </div>
+          <div
+            data-status={entrySubmit.status}
+            className={styles.errorContainer}
+            hidden={entrySubmit.status === 0}
+          >
+            <h1 className={styles.errorHeader}>
+              {entrySubmit.status === 200
+                ? "Success!"
+                : `Error: ${entrySubmit.status}`}
+            </h1>
+            <p className={styles.errorBody}>{entrySubmit.message}</p>
+          </div>
           <form
             id="entryForm"
             className={styles.matchForm}
@@ -204,12 +280,29 @@ export default function Coupon({
             <button
               className={styles.btnSubmit}
               type="submit"
-              disabled={!isEntryComplete}
+              disabled={!isEntryComplete || isDeadlinePassed}
+              hidden={!canChange}
             >
-              Submit Entry
+              {prevEntry ? "Update Entry" : "Submit Entry"}
             </button>
-            {matchDetails.map((match) => {
-              return <EntryComponent match={match} />;
+            <button
+              className={styles.btnSubmit}
+              type="button"
+              onClick={() => setCanChange(true)}
+              hidden={canChange}
+            >
+              Edit Predictions
+            </button>
+            {matchDetails.map((match, i) => {
+              return (
+                <NewEntryComponent
+                  canChange={canChange}
+                  key={match.fixture.id}
+                  index={i}
+                  match={match}
+                  prevEntry={prevEntry}
+                />
+              );
             })}
           </form>
         </div>
