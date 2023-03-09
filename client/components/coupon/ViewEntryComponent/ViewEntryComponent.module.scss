@@ -1,0 +1,93 @@
+.matchContainer {
+  @apply flex flex-col
+          border-2 rounded-lg
+          my-4 p-2 pt-1
+          w-11/12 mx-auto;
+
+  .matchInfo {
+    @apply flex flex-col
+            text-center;
+    .date {
+      @apply text-sm;
+    }
+    .venue {
+      @apply text-xs;
+    }
+  }
+
+  .matchBody {
+    @apply flex flex-row justify-between;
+
+    .team {
+      @apply text-center;
+      img {
+        @apply aspect-square w-8/12
+                mx-auto mt-2 mb-1;
+      }
+    }
+    .centreBody {
+      @apply flex flex-col;
+
+      .predictions {
+        @apply flex flex-row justify-between my-auto
+                text-center;
+        .header {
+          @apply underline;
+        }
+
+        .result {
+          @apply aspect-square w-16;
+          p {
+            @apply border-2 rounded-md
+                  text-lg aspect-square text-center
+                  mx-auto w-1/2;
+          }
+        }
+
+        .prediction {
+          @apply aspect-square w-16;
+          p {
+            @apply border-2 rounded-md
+                  text-lg w-1/2 aspect-square text-center
+                  mx-auto;
+            &.same {
+              @apply bg-green-900 text-white;
+            }
+            &.diff {
+              @apply bg-red-900 text-white;
+            }
+          }
+        }
+      }
+
+      .scoreHeader {
+        @apply underline text-center;
+      }
+
+      .matchScoreline {
+        @apply flex flex-row
+              my-auto items-center
+              justify-evenly;
+        .score {
+          @apply border-2 rounded-md
+                px-3 py-1
+                text-center text-xl
+                text-white;
+
+          &[data-status="w"] {
+            @apply bg-green-900;
+          }
+          &[data-status="l"] {
+            @apply bg-red-900;
+          }
+          &[data-status="d"] {
+            @apply bg-gray-900;
+          }
+        }
+        .scoreSeparator {
+          @apply aspect-square -m-1;
+        }
+      }
+    }
+  }
+}
