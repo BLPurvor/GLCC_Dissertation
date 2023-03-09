@@ -16,7 +16,10 @@ export default function NewEntryComponent({
   index,
   canChange,
 }: EntryComponentProps) {
-  let prediction = Object.values(prevEntry[index]).join("-");
+  let prediction: string = "";
+  if (typeof prevEntry === "object")
+    prediction = Object.values(prevEntry[index]).join("-");
+  if (typeof prevEntry === "string") canChange = true;
 
   return (
     <div
