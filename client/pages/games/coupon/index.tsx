@@ -18,6 +18,7 @@ import NewEntryComponent from "../../../components/coupon/NewEntryComponent";
 import { Entry } from "../../../types/entry";
 import { v4 as uuidv4 } from "uuid";
 import { getDefaultServerProps } from "../../../scripts/serverSideProps";
+import formatDate from "../../../scripts/formatDate";
 
 export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps(ctx) {
@@ -250,15 +251,7 @@ export default function Coupon({
           </div>
           <div className={styles.deadline}>
             <h1 className={styles.deadlineHeader}>Entry Deadline</h1>
-            <p className={styles.deadlineBody}>
-              {new Intl.DateTimeFormat("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-              }).format(new Date(gwData.deadline))}
-            </p>
+            <p className={styles.deadlineBody}>{formatDate(gwData.deadline)}</p>
           </div>
           <div
             className={styles.errorContainer}
@@ -269,6 +262,7 @@ export default function Coupon({
             <p className={styles.errorBody}>
               The deadline for this gameweek has passed.
             </p>
+            <Link href={`/games/coupon/${gwData.id}`}>View your entry.</Link>
           </div>
           <div
             data-status={entrySubmit.status}
