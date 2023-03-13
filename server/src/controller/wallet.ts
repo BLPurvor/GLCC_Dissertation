@@ -1,10 +1,5 @@
 import { prisma } from "../db";
-
-type Wallet = {
-  wallet_id: string;
-  cash_value: number;
-  tokens?: string;
-};
+import { Wallet } from "../types/wallet";
 
 export const getWalletByUser = async (user_id: string) => {
   // Get wallet id and cashValue from user ID
