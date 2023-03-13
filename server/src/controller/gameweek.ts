@@ -1,24 +1,23 @@
 import { prisma } from "../db";
-
-type Gameweek = {
-  id: number;
-  prize: number;
-  did_payout?: boolean;
-  author_name?: String;
-  matches: string;
-  entries?: String[];
-};
+import { Entry } from "../types/entry";
+import { Gameweek } from "../types/gameweek";
+import { getFromList } from "./matches";
 
 export const getAllStd = async (): Promise<Gameweek[]> => {
   // Fetch all gameweeks and only pull id, didPayout, matches, and prize information
-  const result = prisma.gameweek.findMany({
+  const result = await prisma.gameweek.findMany({
     select: {
       id: true,
       did_payout: true,
       matches: true,
       prize: true,
+      deadline: true,
     },
   });
+
+  for (const gameweek of result) {
+    await updateWinners(gameweek.id, gameweek.matches);
+  }
 
   return result;
 };
@@ -33,8 +32,12 @@ export const getLatest = async (): Promise<Gameweek | string> => {
     },
     take: -1,
   });
-
   if (result === null) return "EFLGWI";
+
+  // If the deadline for the gameweek has passed then check results for winners.
+  if (new Date(result.deadline) < new Date()) {
+    await updateWinners(result.id, result.matches);
+  }
 
   return result;
 };
@@ -43,11 +46,6 @@ export const getPayout = async (): Promise<Gameweek[]> => {
   const result = prisma.gameweek.findMany({
     where: {
       did_payout: true,
-    },
-    select: {
-      id: true,
-      matches: true,
-      prize: true,
     },
   });
 
@@ -62,7 +60,14 @@ export const getById = async (id: number): Promise<Gameweek | string> => {
     },
   });
 
+  // If the query ends, return an error string for the router to handle.
   if (dbResult === null) return "EFIDNR";
+
+  // If the deadline for the gameweek has passed then check results for winners.
+  if (new Date(dbResult.deadline) < new Date()) {
+    updateWinners(id, dbResult.matches);
+  }
+
   return dbResult;
 };
 
@@ -108,4 +113,87 @@ export const create = async (
   if (!query) return "ECGWQU"; // If creation fails, throw error.
 
   return "E00000"; // If all succeeds, return success.
+};
+
+export const updateWinners = async (
+  gw_id: number,
+  gw_matches: string
+): Promise<void> => {
+  const entries = await prisma.entry.findMany({
+    select: {
+      id: true,
+      won: true,
+      prediction: true,
+    },
+    where: {
+      gameweek_id: gw_id,
+    },
+  });
+
+  const matchResults = (await getFromList(gw_matches)).response;
+
+  type WinnerObject = {
+    match: number;
+    winner: string;
+  };
+  const matchWinners: Array<WinnerObject> = [];
+  matchResults.forEach((match) => {
+    if (match.teams.home.winner) {
+      matchWinners.push({ match: match.fixture.id, winner: "home" });
+    } else if (match.teams.away.winner) {
+      matchWinners.push({ match: match.fixture.id, winner: "away" });
+    } else {
+      matchWinners.push({ match: match.fixture.id, winner: "draw" });
+    }
+  });
+
+  type EntryCounter = {
+    id: string;
+    count: number;
+  };
+  const entryWinners: Array<EntryCounter> = [];
+
+  entries.forEach((entry) => {
+    let prediction: Entry["prediction"] = JSON.parse(entry.prediction);
+
+    let count = 0;
+
+    prediction.forEach((prediction) => {
+      matchWinners.forEach((winner) => {
+        if (
+          prediction.match_id === winner.match &&
+          prediction.prediction === winner.winner
+        ) {
+          count++;
+        }
+      });
+    });
+
+    entryWinners.push({
+      id: entry.id,
+      count: count,
+    });
+  });
+
+  for (const entry of entryWinners) {
+    if (entry.count === 8) {
+      await prisma.entry.update({
+        where: {
+          id: entry.id,
+        },
+        data: {
+          won: true,
+        },
+      });
+
+      await prisma.gameweek.update({
+        where: {
+          id: gw_id,
+        },
+        data: {
+          did_payout: true,
+        },
+      });
+    }
+  }
 };
