@@ -22,8 +22,6 @@ User accounts have been created in order to test the application, with the permi
        password: '#User_3yp!'
    ```
 
-````
-
 ## Running the application
 
 In order to run this application, several commands are necessary.
@@ -67,4 +65,3 @@ These commands, as well as the separate applications' dependencies, should still
 Should an error occur when running `npm start` in the server directory, it is often caused by the start script needing to be stopped and restarted. It appears to be an issue within the order in which commands are run through the package `concurrently`, however, a fix has not be established yet as it only affects the development environment and will not affect the deployed web application.
 
 It is recommended to use Firefox's CTRL+Shift+M command to create a mobile display, or Chrome's dev tools to create a mobile emulator, as the application is built to function solely on mobile devices at this time.
-````
