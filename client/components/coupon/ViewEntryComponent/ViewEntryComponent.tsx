@@ -57,7 +57,7 @@ export default function ViewEntryComponent({
             <div className={styles.prediction}>
               <h1 className={styles.header}>Prediction</h1>
               {predState ? (
-                prediction.map((prediction, index) => {
+                prediction.map((prediction) => {
                   if (match.fixture.id === prediction.match_id) {
                     switch (prediction.prediction) {
                       case "home":
