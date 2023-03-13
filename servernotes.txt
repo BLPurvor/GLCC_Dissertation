@@ -1,3 +1,0 @@
-Pi Server:
-  - Node and NPM installed
-  - Apache2 Installed
