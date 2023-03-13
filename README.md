@@ -22,7 +22,6 @@ User accounts have been created in order to test the application, with the permi
        password: '#User_3yp!'
    ```
 
-````
 
 ## Running the application
 
