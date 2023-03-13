@@ -1,3 +1,4 @@
+import formatDate from "../../../scripts/formatDate";
 import { Entry } from "../../../types/entry";
 import { Fixture } from "../../../types/fixture";
 
@@ -18,8 +19,15 @@ export default function NewEntryComponent({
 }: EntryComponentProps) {
   let prediction: string = "";
   if (typeof prevEntry === "object")
+    // If the previous entry is of type object, allow rendering. If not, disregard render.
     prediction = Object.values(prevEntry[index]).join("-");
   if (typeof prevEntry === "string") canChange = true;
+
+  // If canChange is set to true, then make the checked property undefined, unchecking the box.
+  // Otherwise, set it to be equal to if the prediction matches the team identifier
+  function isChangeable(canChange: boolean, side: string, prediction: string) {
+    return canChange ? undefined : `${match.fixture.id}-${side}` === prediction;
+  }
 
   return (
     <div
@@ -30,13 +38,7 @@ export default function NewEntryComponent({
       <div className={styles.matchInfo}>
         <p className={styles.date}>
           {/* Date changed to human readable format */}
-          {new Intl.DateTimeFormat("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-          }).format(new Date(match.fixture.date))}
+          {formatDate(match.fixture.date)}
         </p>
         <p className={styles.venue}>
           {match.fixture.venue.name}, {match.fixture.venue.city}
@@ -61,11 +63,7 @@ export default function NewEntryComponent({
               value="home"
               name={match.fixture.id.toString()}
               id={`${match.fixture.id}-home`}
-              checked={
-                canChange
-                  ? undefined
-                  : `${match.fixture.id}-home` === prediction
-              }
+              checked={isChangeable(canChange, "home", prediction)}
             />
             <div className={styles.button}>
               {match.teams.home.name}
@@ -79,11 +77,7 @@ export default function NewEntryComponent({
               value="draw"
               name={match.fixture.id.toString()}
               id={`${match.fixture.id}-draw`}
-              checked={
-                canChange
-                  ? undefined
-                  : `${match.fixture.id}-draw` === prediction
-              }
+              checked={isChangeable(canChange, "draw", prediction)}
             />
             <div className={styles.button}>Draw</div>
           </label>
@@ -93,11 +87,7 @@ export default function NewEntryComponent({
               value="away"
               name={match.fixture.id.toString()}
               id={`${match.fixture.id}-away`}
-              checked={
-                canChange
-                  ? undefined
-                  : `${match.fixture.id}-away` === prediction
-              }
+              checked={isChangeable(canChange, "away", prediction)}
             />
             <div className={styles.button}>
               {match.teams.away.name}
