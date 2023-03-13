@@ -13,22 +13,28 @@ import { FormEvent, useState } from "react";
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import { User } from "../../types/user";
+import { getDefaultServerProps } from "../../scripts/serverSideProps";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  withPageAuthRequired();
-  let { user_id } = ctx.query;
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps(ctx) {
+    const user_id = await getDefaultServerProps(ctx);
 
-  const userDetails = await axios.get(`http://localhost:3001/user/${user_id}`);
+    const userDetails = await axios.get(
+      `http://localhost:3001/user/${user_id}`
+    );
 
-  return {
-    props: {
-      userDetails: userDetails.data,
-    },
-  };
-};
+    return {
+      props: {
+        userDetails: userDetails.data,
+        user_id: user_id,
+      },
+    };
+  },
+});
 
 interface AccountProps {
   userDetails: User;
+  user_id: string;
 }
 
 const handleUpdateDetails = async (
@@ -60,17 +66,10 @@ const handleUpdateDetails = async (
   return updateResult;
 };
 
-export default function Account({ userDetails }: AccountProps) {
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [returnMsg, setReturnMsg] = useState("");
-  const [returnStatus, setReturnStatus] = useState(undefined);
-
-  const { user, isLoading } = useUser();
-
-  if (isLoading) return <Loading />;
-  if (user === undefined) return <Custom404 />;
-
-  const user_id: string = user.sub!.substring(user.sub!.indexOf("|") + 1);
+export default function Account({ userDetails, user_id }: AccountProps) {
+  const [isDisabled, setIsDisabled] = useState(true); // State to handle if user can modify input fields.
+  const [returnMsg, setReturnMsg] = useState(""); // State to handle response from async function.
+  const [returnStatus, setReturnStatus] = useState(undefined); //Status to handle status response from async function.
 
   if (isDisabled) {
     var changes = "Make Changes";
@@ -78,8 +77,10 @@ export default function Account({ userDetails }: AccountProps) {
     var changes = "Cancel Changes";
   }
 
+  console.log(userDetails);
+
   return (
-    <Layout user_id={user_id.toString()!}>
+    <Layout user_id={user_id}>
       <div className={styles.container}>
         <h1 className={styles.header}>Account Details</h1>
         <form
@@ -114,7 +115,7 @@ export default function Account({ userDetails }: AccountProps) {
                   type="text"
                   name={key}
                   id={key}
-                  defaultValue={userDetails[key]}
+                  defaultValue={userDetails[key]} // Unsure what causes this specific error, however it has yet to affect functionality in majority of tests.
                   placeholder={label}
                 />
               </div>
