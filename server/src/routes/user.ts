@@ -1,12 +1,20 @@
 import express, { Request, Response } from "express";
 import { updateById, getSafeInfo } from "../controller/user";
+import { User } from "../types/user";
 const router = express.Router();
 
 router.get("/:id", async (req: Request, res: Response) => {
   // Send query to DB using id url parameter
-  const result = await getSafeInfo(req.params.id);
+  const result: User | string = await getSafeInfo(req.params.id);
 
-  return res.send(result);
+  switch (typeof result) {
+    case "string":
+      return res
+        .status(404)
+        .send("Could not find this user. Please try again later.");
+    default:
+      return res.status(200).send(result);
+  }
 });
 
 router.post("/update", async (req: Request, res: Response) => {
