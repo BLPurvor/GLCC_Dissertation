@@ -32,14 +32,32 @@ interface HomeProps {
 export default function Home({ user_id }: HomeProps) {
   if (user_id) {
     return (
-      <div className={liStyles.container}>
-        <Layout user_id={user_id}>
-          <React.Fragment>
-            <h1>Logged In</h1>
-            <Link href="api/auth/logout">Log out</Link>
-          </React.Fragment>
-        </Layout>
-      </div>
+      <Layout user_id={user_id}>
+        <div className={liStyles.container}>
+          <h1 className={liStyles.txtHeader}>Gregson Lane CC</h1>
+          <div className={liStyles.body}>
+            <h1 className={liStyles.bodyHeader}>Quick Links</h1>
+            <div className={liStyles.quickLinks}>
+              <Link href="/games/coupon">
+                <button
+                  className={`${liStyles.gameButton} ${liStyles.btnOdd}`}
+                  id={liStyles.coupon}
+                >
+                  <span>Predictor</span>
+                </button>
+              </Link>
+              <Link href={`/account/${user_id}`}>
+                <button
+                  className={`${liStyles.gameButton} ${liStyles.btnEven}`}
+                  id={liStyles.account}
+                >
+                  <span>Your Account</span>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Layout>
     );
   }
 
