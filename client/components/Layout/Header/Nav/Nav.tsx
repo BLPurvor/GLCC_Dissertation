@@ -12,10 +12,34 @@ export default function Nav({
 }) {
   const router = useRouter();
 
+  // If the user is not an admin or volunteer, hide the option to access the volunteer portal.
   if (role === "admin" || role === "volunteer") {
     var visible = true;
   } else {
     var visible = false;
+  }
+
+  function handleVisibility(visible: boolean): JSX.Element | null {
+    if (!visible) {
+      return null;
+    }
+
+    return (
+      <>
+        <div className={styles.navSeparator}></div>
+        <Link
+          className={
+            router.pathname.startsWith("/volunteer")
+              ? `${styles.navLink} ${styles.activeLink}`
+              : `${styles.navLink}`
+          }
+          id="Volunteer"
+          href="/volunteer"
+        >
+          Volunteer Portal
+        </Link>
+      </>
+    );
   }
 
   return (
@@ -43,46 +67,7 @@ export default function Nav({
       >
         Games
       </Link>
-      {visible ? (
-        <>
-          <div className={styles.navSeparator}> </div>
-          <Link
-            className={
-              router.pathname.startsWith("/volunteer")
-                ? `${styles.navLink} ${styles.activeLink}`
-                : `${styles.navLink}`
-            }
-            id="Volunteer"
-            href="/volunteer"
-          >
-            Volunteer Portal
-          </Link>
-        </>
-      ) : null}
-      {/* <div className={styles.navSeparator} />
-      <Link
-        className={
-          router.pathname.startsWith("/about")
-            ? `${styles.navLink} ${styles.activeLink}`
-            : `${styles.navLink}`
-        }
-        id="About"
-        href="/about"
-      >
-        About Us
-      </Link>
-      <div className={styles.navSeparator} />
-      <Link
-        className={
-          router.pathname.startsWith("/contact-us")
-            ? `${styles.navLink} ${styles.activeLink}`
-            : `${styles.navLink}`
-        }
-        id="Contact"
-        href="/contact-us"
-      >
-        Contact Us
-      </Link> */}
+      {handleVisibility(visible)}
     </nav>
   );
 }
