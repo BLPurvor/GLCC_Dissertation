@@ -1,10 +1,8 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import Link from "next/link";
 
 import CloseIcon from "../../../../assets/shared/close.svg";
-import Loading from "../../../Loading";
 
 import styles from "./AccountPopover.module.scss";
 
@@ -21,12 +19,6 @@ export default function AccountPopover({
   status,
   statusChange,
 }: PopoverProps) {
-  const { user, isLoading } = useUser();
-
-  if (isLoading) {
-    <Loading />;
-  }
-
   return (
     <>
       <div
@@ -40,12 +32,7 @@ export default function AccountPopover({
             className={styles.btnClose}
             onClick={() => statusChange(!status)}
           >
-            <Image
-              src={CloseIcon}
-              alt="Close"
-              className={styles.iconClose}
-              style={{ padding: 0 }}
-            />
+            <Image src={CloseIcon} alt="Close" className={styles.iconClose} />
           </button>
           <Link href={`/account/${user_id}`}>Account Details</Link>
           <Link href="/api/auth/logout">Log Out </Link>
