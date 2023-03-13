@@ -1,0 +1,49 @@
+@import "../../../../styles/_variables";
+
+$transitionSpeed: 0.5s;
+
+.container[data-status="true"] {
+  transform: translateX(0);
+  transition: transform $transitionSpeed;
+}
+
+.container[data-status="false"] {
+  transform: translateX(-100%);
+  transition: transform $transitionSpeed;
+}
+
+.container {
+  height: 80vh;
+  margin-top: -0.35rem;
+  background: rgba($colPrimary, 0.64);
+  backdrop-filter: blur(4px);
+  overflow-y: scroll;
+  @apply z-50 absolute
+          w-full 
+          flex flex-col items-center
+          pt-6 -ml-3;
+
+  .navSeparator {
+    @apply h-0.5 w-3/5 
+            rounded-full
+            bg-black;
+  }
+
+  .navLink {
+    @apply text-white font-semibold text-xl text-center
+            my-6 w-2/5 py-3 rounded-md;
+  }
+  .navLink:hover,
+  .navLink:focus {
+    background-color: rgba($colTertiary, 0.2);
+  }
+
+  .activeLink {
+    @apply underline underline-offset-4;
+  }
+  .activeLink:hover,
+  .activeLink:focus {
+    @apply cursor-not-allowed
+            bg-transparent;
+  }
+}

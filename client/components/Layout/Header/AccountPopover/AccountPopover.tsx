@@ -3,8 +3,8 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import Link from "next/link";
 
-import CloseIcon from "../../assets/shared/close.svg";
-import Loading from "../Loading";
+import CloseIcon from "../../../../assets/shared/close.svg";
+import Loading from "../../../Loading";
 
 import styles from "./AccountPopover.module.scss";
 

@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import imgLogo from "../../assets/brand/logo.png";
-import imgUser from "../../assets/shared/user.svg";
-import Nav from "../Nav";
-import AccountPopover from "../AccountPopover";
+import imgLogo from "../../../assets/brand/logo.png";
+import imgUser from "../../../assets/shared/user.svg";
+import Nav from "./Nav";
+import AccountPopover from "./AccountPopover";
 
 import styles from "./Header.module.scss";
 

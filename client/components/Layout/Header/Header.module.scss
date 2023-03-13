@@ -1,0 +1,43 @@
+@import "../../../styles/variables";
+
+.container {
+  background-color: $colPrimary;
+  height: 10vh;
+  @apply w-full px-3
+          flex justify-between items-center
+          fixed top-0;
+
+  .wrapBurger {
+    .iconBurger {
+      height: 7vh;
+      @apply w-auto aspect-square
+              my-4
+              flex flex-col justify-evenly;
+
+      .iconB1,
+      .iconB2,
+      .iconB3 {
+        @apply h-1 w-auto
+                m-1
+                rounded-full
+                bg-black;
+        @media (prefers-color-scheme: light) {
+          background-color: $colTertiary;
+        }
+      }
+    }
+  }
+
+  .imgLogo {
+    height: 7vh;
+    @apply w-auto;
+  }
+
+  .iconUser {
+    height: 7vh;
+    @apply w-auto;
+    @media (prefers-color-scheme: light) {
+      filter: invert(100%);
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@import "../../../styles/variables";
+
+.container {
+  background-color: $colPrimary;
+  height: 10vh;
+  @apply w-full
+          flex flex-row justify-between items-center
+          px-3 mt-8
+          fixed bottom-0;
+
+  .iconHome {
+    @apply h-4/6 w-auto;
+    img {
+      @media (prefers-color-scheme: light) {
+        filter: invert(100%);
+      }
+      @apply h-full w-auto;
+    }
+  }
+
+  .txtValue {
+    @apply font-semibold text-3xl;
+    @media (prefers-color-scheme: light) {
+      color: $colTertiary;
+    }
+  }
+}

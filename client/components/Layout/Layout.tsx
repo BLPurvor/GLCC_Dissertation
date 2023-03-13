@@ -1,5 +1,5 @@
-import Header from "../Header";
-import Footer from "../Footer";
+import Header from "./Header";
+import Footer from "./Footer";
 
 import styles from "./layout.module.scss";
 
@@ -36,7 +36,7 @@ export default function Layout({ children, user_id }: LayoutProps) {
     user_data === undefined
   ) {
     return <Custom404 />;
-}
+  }
 
   return (
     <div className={styles.container}>
