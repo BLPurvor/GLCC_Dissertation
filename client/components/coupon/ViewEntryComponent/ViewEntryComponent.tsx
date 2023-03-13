@@ -1,4 +1,5 @@
 import { useState } from "react";
+import formatDate from "../../../scripts/formatDate";
 import { Entry } from "../../../types/entry";
 import { Fixture } from "../../../types/fixture";
 import styles from "./ViewEntryComponent.module.scss";
@@ -14,6 +15,95 @@ export default function ViewEntryComponent({
 }: ViewEntryProps) {
   const predState = typeof prediction === "object";
 
+  function displayPrediction(prediction: string): JSX.Element {
+    switch (prediction) {
+      // This layout is inclusive of a draw as a home prediction and draw result counts as a loss for the entrant.
+      case "home":
+        // If the user had predicted a home win, then render a H and conditionally apply styling based on if the home team scored more goals than the away team.
+        return (
+          <p
+            className={
+              match.fixture.status.short === "FT"
+                ? match.goals.home > match.goals.away
+                  ? `${styles.same}`
+                  : `${styles.diff}`
+                : ""
+            }
+          >
+            H
+          </p>
+        );
+      case "away":
+        // If the user predicted an away win, then render an A and apply conditional styling as above.
+        return (
+          <p
+            className={
+              match.fixture.status.short === "FT"
+                ? match.goals.away > match.goals.home
+                  ? `${styles.same}`
+                  : `${styles.diff}`
+                : ""
+            }
+          >
+            A
+          </p>
+        );
+      default:
+        // If a user has predicted a draw, then render an X and apply conditional styling as above.
+        return (
+          <p
+            className={
+              match.fixture.status.short === "FT"
+                ? match.goals.away == match.goals.home
+                  ? `${styles.same}`
+                  : `${styles.diff}`
+                : ""
+            }
+          >
+            X
+          </p>
+        );
+    }
+  }
+
+  function handleHomeWin(goalsHome: number, goalsAway: number): string {
+    // Return value of function is passed to data-status attribute in order to conditionally apply styling based upon it.
+    if (goalsHome > goalsAway) {
+      return "w";
+    } else if (goalsHome < goalsAway) {
+      return "l";
+    } else {
+      return "d";
+    }
+  }
+
+  function handleAwayWin(goalsHome: number, goalsAway: number): string {
+    // Return value of function is passed to data-status attribute in order to conditionally apply styling based upon it.
+    if (goalsAway > goalsHome) {
+      return "w";
+    } else if (goalsAway < goalsHome) {
+      return "l";
+    } else {
+      return "d";
+    }
+  }
+
+  function handleResult(
+    status: string,
+    goalsHome: number,
+    goalsAway: number
+  ): string {
+    if (status !== "FT") return "-"; // If the match has not completed, then render a "-". Guard clause to stop unnecessary calc by the web browser.
+
+    if (goalsHome > goalsAway) {
+      return "H";
+    } else if (goalsHome < goalsAway) {
+      return "A";
+    } else {
+      return "X";
+    }
+  }
+
   return (
     <div
       id={match.fixture.id.toString()}
@@ -23,13 +113,7 @@ export default function ViewEntryComponent({
       <div className={styles.matchInfo}>
         <p className={styles.date}>
           {/* Date changed to human readable format */}
-          {new Intl.DateTimeFormat("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-          }).format(new Date(match.fixture.date))}
+          {formatDate(match.fixture.date)}
         </p>
         <p className={styles.venue}>
           {match.fixture.venue.name}, {match.fixture.venue.city}
@@ -45,13 +129,11 @@ export default function ViewEntryComponent({
             <div className={styles.result}>
               <h1 className={styles.header}>Result</h1>
               <p>
-                {match.goals.home > match.goals.away
-                  ? `H`
-                  : match.goals.away > match.goals.home
-                  ? `A`
-                  : match.fixture.status.short !== "FT"
-                  ? "-"
-                  : "X"}
+                {handleResult(
+                  match.fixture.status.short,
+                  match.goals.home,
+                  match.goals.away
+                )}
               </p>
             </div>
             <div className={styles.prediction}>
@@ -59,50 +141,7 @@ export default function ViewEntryComponent({
               {predState ? (
                 prediction.map((prediction) => {
                   if (match.fixture.id === prediction.match_id) {
-                    switch (prediction.prediction) {
-                      case "home":
-                        return (
-                          <p
-                            className={
-                              match.fixture.status.short === "FT"
-                                ? match.goals.home > match.goals.away
-                                  ? `${styles.same}`
-                                  : `${styles.diff}`
-                                : ""
-                            }
-                          >
-                            H
-                          </p>
-                        );
-                      case "away":
-                        return (
-                          <p
-                            className={
-                              match.fixture.status.short === "FT"
-                                ? match.goals.away > match.goals.home
-                                  ? `${styles.same}`
-                                  : `${styles.diff}`
-                                : ""
-                            }
-                          >
-                            A
-                          </p>
-                        );
-                      default:
-                        return (
-                          <p
-                            className={
-                              match.fixture.status.short === "FT"
-                                ? match.goals.away == match.goals.home
-                                  ? `${styles.same}`
-                                  : `${styles.diff}`
-                                : ""
-                            }
-                          >
-                            X
-                          </p>
-                        );
-                    }
+                    return displayPrediction(prediction.prediction);
                   }
                 })
               ) : (
@@ -113,29 +152,19 @@ export default function ViewEntryComponent({
           <h1 className={styles.scoreHeader}>Final Score</h1>
           <div className={styles.matchScoreline}>
             <p
-              data-status={
-                match.goals.home > match.goals.away
-                  ? "w"
-                  : match.goals.away > match.goals.home
-                  ? "l"
-                  : "d"
-              }
+              data-status={handleHomeWin(match.goals.home, match.goals.away)}
               className={styles.score}
             >
               {match.goals.home || "0"}
+              {/* Print out the goals scored by the home team, or print 0 if null. */}
             </p>
             <p className={styles.scoreSeparator}>-</p>
             <p
-              data-status={
-                match.goals.home < match.goals.away
-                  ? "w"
-                  : match.goals.away < match.goals.home
-                  ? "l"
-                  : "d"
-              }
+              data-status={handleAwayWin(match.goals.home, match.goals.away)}
               className={styles.score}
             >
               {match.goals.away || "0"}
+              {/*Print the goals scored by the away team, or print 0 if null. */}
             </p>
           </div>
         </div>
