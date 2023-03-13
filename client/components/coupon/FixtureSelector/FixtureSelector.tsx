@@ -1,9 +1,13 @@
+import formatDate from "../../../scripts/formatDate";
 import { Fixture } from "../../../types/fixture";
 
 import styles from "./FixtureSelector.module.scss";
 
-export default function FixtureSelector(props: { fixture: Fixture }) {
-  const fixture = props.fixture;
+interface SelectorProps {
+  fixture: Fixture;
+}
+
+export default function FixtureSelector({ fixture }: SelectorProps) {
   return (
     <label
       key={fixture.fixture.id}
@@ -18,15 +22,7 @@ export default function FixtureSelector(props: { fixture: Fixture }) {
       />
       <div className={styles.housing}>
         <div className={styles.fixtureInfo}>
-          <p className={styles.date}>
-            {new Intl.DateTimeFormat("en-GB", {
-              hour: "2-digit",
-              minute: "2-digit",
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-            }).format(new Date(fixture.fixture.date))}
-          </p>
+          <p className={styles.date}>{formatDate(fixture.fixture.date)}</p>
           <p className={styles.venue}>
             {fixture.fixture.venue.name}, {fixture.fixture.venue.city}
           </p>
