@@ -176,7 +176,7 @@ export default function NewCoupon() {
             Submission Deadline
             <input
               required
-              className={styles.deadline}
+              className={styles.dateSelect}
               type="datetime-local"
               hidden={fixtures.length < 1}
             />

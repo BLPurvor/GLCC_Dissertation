@@ -1,78 +1,66 @@
-@import '../../variables';
+@import "../../variables";
 
 .container {
-  @apply  w-auto py-24
-          z-0
-          ;
+  @apply w-auto py-24
+          z-0;
 
   .txtHeader {
-    @apply  py-2
+    @apply py-2
             text-center text-2xl 
-            underline underline-offset-2
-    ;
+            underline underline-offset-2;
   }
 
   .dateSelect {
-    @apply  w-11/12 h-auto
+    @apply w-11/12 h-auto
             mx-auto my-1
-            text-center
-    ;
+            text-center;
 
     .dateInputGroupGroup {
-      @apply  flex flex-row justify-evenly
-              mx-auto
-      ;
+      @apply flex flex-row justify-evenly
+              mx-auto;
 
       .dateInputGroup {
-        @apply  flex flex-col
-        ;
+        @apply flex flex-col;
 
         label {
-          @apply  text-center
-          ;
+          @apply text-center;
         }
-        
+
         input[type="date"] {
-          @apply  mx-auto
+          @apply mx-auto
                   border-2 border-gray-400 rounded-md
-                  w-full
-          ;
+                  w-full;
         }
       }
     }
-     
+
     .dateSubmit {
       background-color: $colPrimary;
-      @apply  mx-auto p-2
+      @apply mx-auto p-2
               border-2 border-gray-400 rounded-lg
-              text-white
-      ;
+              text-white;
     }
 
     .leagueHousing {
-      @apply  flex flex-row
+      @apply flex flex-row
               w-full
-              justify-evenly
-      ;
+              justify-evenly;
 
-      input[type="radio"]{
-        @apply  hidden
-        ;
+      input[type="radio"] {
+        @apply hidden;
       }
       input:checked + .leagueSelectHousing {
         box-shadow: 0px 0px 0.5rem 0.25rem $colPrimary;
       }
 
       .leagueSelectHousing {
-        @apply  w-full my-2 p-1
+        @apply w-full my-2 p-1
                 border-2 border-gray-400 rounded-xl
                 flex flex-col
-                text-center
-        ;
-        
+                text-center;
+
         img {
-          @apply  mx-auto
-          ;
+          @apply mx-auto;
         }
       }
     }
@@ -80,73 +68,70 @@
 
   .counter {
     background-color: $colPrimary;
-    @apply  w-16 aspect-square
+    @apply w-16 aspect-square
             fixed right-1.5
             z-20
             flex items-center
             rounded-2xl
-            text-white text-center
-    ;
+            text-white text-center;
   }
 
   .invisible {
-    @apply  hidden
-    ;
+    @apply hidden;
   }
   .invalidMatches {
     background-color: $colAccent;
   }
 
   .fixtureHousing {
-    @apply  text-center
-    ;
+    @apply text-center;
+
+    label input[type="datetime-local"] {
+      @apply border-2 border-gray-500 rounded-lg;
+    }
   }
 
   .matchweekSubmit {
     background-color: $colPrimary;
-    @apply  text-white
+    @apply text-white
               border-2 border-gray-400 rounded-lg
-              p-2
-    ;
+              p-2;
 
     &:disabled {
       background-color: $colAccent;
-      @apply  text-gray-400
-      ;
+      @apply text-gray-400;
     }
   }
 
   .returnMessageContainer {
-    &[data-return-status="0"]{
+    &[data-return-status="0"] {
       @apply hidden;
     }
-    &[data-return-status="200"]{
+    &[data-return-status="200"] {
       @apply bg-green-900;
     }
-    &[data-return-status="400"]{
+    &[data-return-status="400"] {
       @apply bg-red-900;
     }
-    &[data-return-status="401"]{
+    &[data-return-status="401"] {
       @apply bg-red-900;
     }
-    &[data-return-status="403"]{
+    &[data-return-status="403"] {
       @apply bg-red-900;
     }
 
-    @apply  mx-auto w-5/6
+    @apply mx-auto w-5/6
             text-center
             border-2 rounded-lg
             text-white
-            bg-green-900
-    ;    
-    
+            bg-green-900;
+
     .statusCode {
-      // @apply  
+      // @apply
       // ;
     }
     .statusMessage {
-      @apply  font-light
-      ;
+      @apply font-light;
     }
   }
 }

@@ -146,9 +146,10 @@ export default function Coupon({
     e.preventDefault();
 
     const prevEntryURL = `http://localhost:3001/entry/prevEntry/${gwData.id}/${user_id}`;
-    const prevEntryCheck = await axios.get(prevEntryURL).then((res) => res);
-
-    console.log(prevEntryCheck);
+    const prevEntryCheck = await axios
+      .get(prevEntryURL)
+      .then((res) => res)
+      .catch((err) => err);
 
     let entryNodeList = document.querySelectorAll(
       "input[type='radio']:checked"
