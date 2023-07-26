@@ -1,17 +1,10 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-import useSWR from "swr";
-import { userInfoFetch } from "../../scripts/userInfo";
-
 import Layout from "../../components/Layout";
-import Loading from "../../components/Loading";
 import styles from "../../styles/account/Account.module.scss";
-import Custom404 from "../404";
 
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { FormEvent, useState } from "react";
 import axios from "axios";
-import { GetServerSideProps } from "next";
 import { User } from "../../types/user";
 import { getDefaultServerProps } from "../../scripts/serverSideProps";
 
