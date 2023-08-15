@@ -1,8 +1,0 @@
-Switched to Next.JS to allow future development
-Using Auth0 for authentication to allow better options
-  - Modified Auth0 universal login pages (Screenshot this)
-  - Verbose login errors (advanced tenant settings)
-  - 
-
-MongoDB not supported on RPi 4 (architecture not arm8.2^)
-  - Using PrismaORM for MariaDB

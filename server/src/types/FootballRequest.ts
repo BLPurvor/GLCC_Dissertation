@@ -67,5 +67,11 @@ type Fixture = {
       name: string;
       winner: boolean;
     };
+    away: {
+      id: number;
+      logo: string;
+      name: string;
+      winner: boolean;
+    };
   };
 };
